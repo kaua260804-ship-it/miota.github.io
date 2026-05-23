@@ -9,7 +9,6 @@
     <style>
         :root {
             --bg: #0f0f23;
-            --tempo-quiz: 180;
             --tamanho-fonte-titulo: 52px;
             --tamanho-fonte-texto: 22px;
             --tamanho-fonte-emoji: 120px;
@@ -25,7 +24,6 @@
             user-select: none;
         }
 
-        /* ESTRELAS */
         .stars {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -42,7 +40,6 @@
             50% { opacity: 1; transform: scale(1.5); }
         }
 
-        /* CONTAINER */
         .slide-container {
             width: 100vw; height: 100vh;
             position: relative; z-index: 1;
@@ -60,7 +57,6 @@
             to { opacity: 1; transform: scale(1) rotate(0deg); }
         }
 
-        /* CARD */
         .slide-content {
             background: white; border-radius: 40px;
             padding: 40px 50px; max-width: 900px;
@@ -68,6 +64,7 @@
             box-shadow: 0 30px 80px rgba(0,0,0,0.4);
             position: relative; z-index: 3;
             overflow: visible;
+            min-height: 200px;
         }
         @keyframes pulse {
             0%,100% { transform: scale(1); }
@@ -171,7 +168,6 @@
         }
         .btn-nav.amarelo { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-nav.verde { background: linear-gradient(135deg, #48bb78, #38a169); }
-        .btn-nav.vermelho { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
         .quiz-option {
             display: block; width: 100%;
@@ -256,7 +252,7 @@
             100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
         }
 
-        /* ========== ELEMENTOS EDITÁVEIS ========== */
+        /* ELEMENTOS EDITÁVEIS */
         .editavel {
             cursor: text;
             transition: all 0.2s;
@@ -278,62 +274,50 @@
             outline-offset: 3px;
             box-shadow: 0 0 0 8px rgba(102,126,234,0.1);
         }
-        .editavel:empty::before {
-            content: attr(data-placeholder);
-            color: #a0aec0;
-            font-style: italic;
-        }
 
-        /* ========== IMAGENS NO SLIDE ========== */
-        .imagem-slide {
-            max-width: 200px;
-            max-height: 200px;
-            object-fit: contain;
-            border-radius: 15px;
-            cursor: move;
-            transition: all 0.2s;
-            position: relative;
-            display: inline-block;
-            margin: 10px;
-        }
-        .imagem-slide:hover {
-            outline: 3px dashed #667eea;
-            outline-offset: 5px;
-            transform: scale(1.02);
-        }
-        .imagem-slide.dragging {
-            opacity: 0.7;
-            outline: 4px solid #667eea;
-            z-index: 999;
-        }
+        /* IMAGENS */
         .imagem-container {
             display: inline-block;
             position: relative;
             margin: 10px;
             cursor: move;
+            user-select: none;
         }
-        .imagem-container:hover .imagem-controls {
-            opacity: 1;
+        .imagem-slide {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 15px;
+            transition: all 0.2s;
+        }
+        .imagem-slide:hover {
+            outline: 3px dashed #667eea;
+            outline-offset: 5px;
         }
         .imagem-controls {
             position: absolute;
-            top: -15px; right: -15px;
+            top: -20px; right: -20px;
             display: flex; gap: 5px;
             opacity: 0; transition: opacity 0.2s;
             z-index: 200;
         }
+        .imagem-container:hover .imagem-controls {
+            opacity: 1;
+        }
         .imagem-controls button {
-            width: 30px; height: 30px;
+            width: 32px; height: 32px;
             border-radius: 50%; border: none;
-            cursor: pointer; font-size: 14px;
+            cursor: pointer; font-size: 16px;
             color: white; transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
         }
-        .imagem-controls .btn-resize { background: #667eea; }
-        .imagem-controls .btn-delete { background: #ef4444; }
+        .btn-img-aumentar { background: #667eea; }
+        .btn-img-diminuir { background: #667eea; }
+        .btn-img-deletar { background: #ef4444; }
         .imagem-controls button:hover { transform: scale(1.2); }
 
-        /* ========== PAINEL DE CONFIGURAÇÃO ========== */
+        /* PAINEL CONFIG */
         .config-panel {
             position: fixed; top: 0; right: -450px;
             width: 430px; height: 100vh;
@@ -383,7 +367,7 @@
         .config-panel .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
         .config-panel .btn-success { background: linear-gradient(135deg, #48bb78, #38a169); }
 
-        /* ========== BARRA DE FERRAMENTAS DO SLIDE ========== */
+        /* TOOLBAR */
         .toolbar-slide {
             position: fixed; top: 15px; left: 50%;
             transform: translateX(-50%);
@@ -391,9 +375,7 @@
             padding: 8px 20px; display: flex; gap: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 9998; align-items: center;
-            transition: opacity 0.3s;
         }
-        .toolbar-slide.hidden { opacity: 0; pointer-events: none; }
         .toolbar-slide button {
             background: none; border: none;
             font-size: 16px; cursor: pointer;
@@ -403,7 +385,6 @@
             font-weight: 600; white-space: nowrap;
         }
         .toolbar-slide button:hover { background: #f0f0f0; color: #667eea; }
-        .toolbar-slide button.ativo { background: #667eea; color: white; }
         .toolbar-slide .separator {
             width: 1px; height: 25px;
             background: #e2e8f0; margin: 0 5px;
@@ -442,7 +423,7 @@
             .quiz-option { font-size: 16px; padding: 12px 15px; }
             .contador { font-size: 80px; }
             .config-panel { width: 100%; right: -100%; }
-            .toolbar-slide { padding: 6px 12px; gap: 4px; }
+            .toolbar-slide { padding: 6px 12px; gap: 4px; overflow-x: auto; }
             .toolbar-slide button { font-size: 12px; padding: 6px 8px; }
         }
     </style>
@@ -450,15 +431,11 @@
 <body>
     <div class="stars" id="starsContainer"></div>
 
-    <!-- BARRA DE FERRAMENTAS -->
+    <!-- TOOLBAR -->
     <div class="toolbar-slide" id="toolbar">
-        <button onclick="App.modoEdicao()" title="Ativar/Desativar edição"><i class="fas fa-edit"></i> Editar</button>
+        <button onclick="App.negrito()" title="Negrito"><b>B</b></button>
+        <button onclick="App.italico()" title="Itálico"><i>I</i></button>
         <span class="separator"></span>
-        <button onclick="App.adicionarImagem()" title="Adicionar imagem"><i class="fas fa-image"></i> Imagem</button>
-        <button onclick="App.adicionarCaixaTexto()" title="Adicionar caixa de texto"><i class="fas fa-font"></i> Texto</button>
-        <span class="separator"></span>
-        <button onclick="App.negrito()" title="Negrito"><i class="fas fa-bold"></i></button>
-        <button onclick="App.italico()" title="Itálico"><i class="fas fa-italic"></i></button>
         <button onclick="App.aumentarFonte()" title="Aumentar fonte">A+</button>
         <button onclick="App.diminuirFonte()" title="Diminuir fonte">A-</button>
         <span class="separator"></span>
@@ -466,62 +443,66 @@
         <button onclick="App.alinharCentro()" title="Alinhar centro"><i class="fas fa-align-center"></i></button>
         <button onclick="App.alinharDireita()" title="Alinhar direita"><i class="fas fa-align-right"></i></button>
         <span class="separator"></span>
+        <button onclick="App.adicionarImagem()" title="Adicionar imagem"><i class="fas fa-image"></i> Imagem</button>
+        <button onclick="App.adicionarCaixaTexto()" title="Adicionar texto"><i class="fas fa-font"></i> Texto</button>
+        <span class="separator"></span>
         <span style="font-size: 11px; color: #a0aec0;">Slide <strong id="numSlide">1</strong>/8</span>
     </div>
 
+    <!-- SLIDES -->
     <div class="slide-container" id="slideContainer">
 
-        <!-- SLIDE 0: ESCOLHER MODO -->
-        <div class="slide active" id="slide-escolha" data-num="0">
-            <div class="slide-content" id="content-escolha">
+        <!-- SLIDE 0 -->
+        <div class="slide active" id="slide-escolha">
+            <div class="slide-content">
                 <div class="emoji-gigante">🎮</div>
-                <h1 class="titulo-slide editavel" data-id="titulo-escolha" data-placeholder="Título do slide">Quiz Interativo!</h1>
-                <p class="subtitulo editavel" data-id="subtitulo-escolha" data-placeholder="Subtítulo">Escolha o tema da apresentação:</p>
+                <h1 class="titulo-slide editavel" data-id="titulo-escolha">Quiz Interativo!</h1>
+                <p class="subtitulo editavel" data-id="subtitulo-escolha">Escolha o tema da apresentação:</p>
                 <div class="btn-container">
                     <button class="btn-escolha modo1" id="btnModo1">
                         <span class="btn-emoji">🍎🤸</span>
-                        <span class="editavel" data-id="labelModo1" data-placeholder="Nome do modo 1">Alimentação + Exercícios</span>
+                        <span class="editavel" data-id="labelModo1">Alimentação + Exercícios</span>
                     </button>
                     <button class="btn-escolha modo2" id="btnModo2">
                         <span class="btn-emoji">😴📚</span>
-                        <span class="editavel" data-id="labelModo2" data-placeholder="Nome do modo 2">Sono + Postura</span>
+                        <span class="editavel" data-id="labelModo2">Sono + Postura</span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- SLIDE 1: TÍTULO -->
-        <div class="slide" id="slide-titulo" data-num="1">
-            <div class="slide-content" id="content-titulo">
-                <div class="emoji-gigante editavel" data-id="temaEmoji" data-placeholder="😀">🍎</div>
-                <h1 class="titulo-slide editavel" data-id="temaTitulo" data-placeholder="Título do tema">Alimentação Saudável</h1>
-                <p class="subtitulo editavel" data-id="temaSubtitulo" data-placeholder="Subtítulo do tema">Vamos aprender juntos!</p>
+        <!-- SLIDE 1 -->
+        <div class="slide" id="slide-titulo">
+            <div class="slide-content">
+                <div class="emoji-gigante editavel" data-id="temaEmoji">🍎</div>
+                <h1 class="titulo-slide editavel" data-id="temaTitulo">Alimentação Saudável</h1>
+                <p class="subtitulo editavel" data-id="temaSubtitulo">Vamos aprender juntos!</p>
                 <button class="btn-nav" id="btnSlide1">▶️ Bora lá!</button>
             </div>
         </div>
 
-        <!-- SLIDE 2: CONTEÚDO 1 -->
-        <div class="slide" id="slide-conteudo1" data-num="2">
-            <div class="slide-content" id="content-conteudo1">
+        <!-- SLIDE 2 -->
+        <div class="slide" id="slide-conteudo1">
+            <div class="slide-content">
                 <div class="emoji-medio">📖</div>
-                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" class="editavel" data-id="conteudo1Titulo" data-placeholder="Título do conteúdo">🍎 Pirâmide Alimentar</h2>
-                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="conteudo1Texto" data-placeholder="Digite o conteúdo aqui...">A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS). Um prato colorido é um prato saudável! 🌈</p>
+                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" class="editavel" data-id="conteudo1Titulo">🍎 Pirâmide Alimentar</h2>
+                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="conteudo1Texto">A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS). Um prato colorido é um prato saudável! 🌈</p>
                 <button class="btn-nav" id="btnSlide2">▶️ Entendi!</button>
             </div>
         </div>
 
-        <!-- SLIDE 3: CONTEÚDO 2 -->
-        <div class="slide" id="slide-conteudo2" data-num="3">
-            <div class="slide-content" id="content-conteudo2">
+        <!-- SLIDE 3 -->
+        <div class="slide" id="slide-conteudo2">
+            <div class="slide-content">
                 <div class="emoji-medio">💡</div>
-                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" class="editavel" data-id="conteudo2Titulo" data-placeholder="Título do conteúdo">🤸 Mexa-se!</h2>
-                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="conteudo2Texto" data-placeholder="Digite o conteúdo aqui...">1 hora de exercício por dia já faz diferença! Pular corda, jogar bola ou andar de bicicleta fortalece os ossos e libera endorfina! 😄</p>
+                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" class="editavel" data-id="conteudo2Titulo">🤸 Mexa-se!</h2>
+                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="conteudo2Texto">1 hora de exercício por dia já faz diferença! Pular corda, jogar bola ou andar de bicicleta fortalece os ossos e libera endorfina! 😄</p>
                 <button class="btn-nav" id="btnSlide3">▶️ Próximo!</button>
             </div>
         </div>
 
-        <!-- SLIDE 4: QUIZ -->
-        <div class="slide" id="slide-quiz" data-num="4">
+        <!-- SLIDE 4 -->
+        <div class="slide" id="slide-quiz">
             <div class="slide-content">
                 <div class="emoji-medio">❓</div>
                 <h2 style="font-size: 30px; color: #667eea; margin-bottom: 15px;">Vamos testar!</h2>
@@ -533,12 +514,12 @@
             </div>
         </div>
 
-        <!-- SLIDE 5: REGRAS -->
-        <div class="slide" id="slide-regras" data-num="5">
-            <div class="slide-content" id="content-regras">
+        <!-- SLIDE 5 -->
+        <div class="slide" id="slide-regras">
+            <div class="slide-content">
                 <div class="emoji-medio">🏆</div>
                 <h1 class="titulo-slide" style="font-size: 40px;">Competição!</h1>
-                <div class="regras-lista editavel" data-id="regrasTexto" data-placeholder="Regras da competição...">
+                <div class="regras-lista editavel" data-id="regrasTexto">
                     <p>🥇 <strong>1º lugar:</strong> Prêmio especial!</p>
                     <p>🥈 <strong>2º lugar:</strong> Prêmio</p>
                     <p>🥉 <strong>3º lugar:</strong> Prêmio</p>
@@ -550,17 +531,13 @@
             </div>
         </div>
 
-        <!-- SLIDE 6: CONTAGEM -->
-        <div class="slide" id="slide-contagem" data-num="6">
+        <!-- SLIDE 6 -->
+        <div class="slide" id="slide-contagem">
             <div class="slide-content">
                 <div class="emoji-medio">⏰</div>
                 <h2 style="font-size: 36px; color: #2d3748;">Preparem-se!</h2>
-                <p style="font-size: 20px; color: #718096; margin: 10px 0;">
-                    Abram o site no celular ou computador:
-                </p>
-                <p class="site-link editavel" data-id="linkSite" data-placeholder="URL do site">
-                    🔗 kaua260804-ship-it.github.io/Site-Habitos-Saudaveis
-                </p>
+                <p style="font-size: 20px; color: #718096; margin: 10px 0;">Abram o site no celular ou computador:</p>
+                <p class="site-link editavel" data-id="linkSite">🔗 kaua260804-ship-it.github.io/Site-Habitos-Saudaveis</p>
                 <div class="timer-quiz" id="timerQuiz" style="display: none;">⏱️ 00:00</div>
                 <div class="contador" id="contador" style="margin: 20px 0;">3</div>
                 <button class="btn-nav amarelo" id="btnIniciarContagem">🎮 Iniciar!</button>
@@ -568,8 +545,8 @@
             </div>
         </div>
 
-        <!-- SLIDE 7: RANKING -->
-        <div class="slide" id="slide-ranking" data-num="7">
+        <!-- SLIDE 7 -->
+        <div class="slide" id="slide-ranking">
             <div class="slide-content">
                 <div class="emoji-gigante">🏆</div>
                 <h1 class="titulo-slide" style="font-size: 42px;">Resultado Final!</h1>
@@ -582,67 +559,44 @@
 
     </div>
 
-    <!-- PAINEL DE CONFIGURAÇÃO -->
+    <!-- PAINEL CONFIG -->
     <div class="overlay" id="overlay" onclick="toggleConfig()"></div>
     <div class="config-panel" id="configPanel">
         <h3>⚙️ Configurações</h3>
-
         <label>⏱️ Tempo do Quiz (minutos)</label>
         <input type="number" id="configTempo" value="3" min="1" max="60" onchange="App.atualizarConfig()">
-
         <label>📝 Fonte Títulos</label>
         <input type="range" id="configFonteTitulo" value="52" min="30" max="80" oninput="App.atualizarConfig()">
-        <span style="font-size: 11px;">Atual: <span id="valorFonteTitulo">52px</span></span>
-
+        <span style="font-size:11px;">Atual: <span id="valorFonteTitulo">52px</span></span>
         <label>📝 Fonte Textos</label>
         <input type="range" id="configFonteTexto" value="22" min="14" max="36" oninput="App.atualizarConfig()">
-        <span style="font-size: 11px;">Atual: <span id="valorFonteTexto">22px</span></span>
-
+        <span style="font-size:11px;">Atual: <span id="valorFonteTexto">22px</span></span>
         <label>😀 Fonte Emojis</label>
         <input type="range" id="configFonteEmoji" value="120" min="60" max="180" oninput="App.atualizarConfig()">
-        <span style="font-size: 11px;">Atual: <span id="valorFonteEmoji">120px</span></span>
-
+        <span style="font-size:11px;">Atual: <span id="valorFonteEmoji">120px</span></span>
         <label>🎨 Cor de Fundo</label>
         <input type="color" id="configBgCor" value="#0f0f23" onchange="App.atualizarConfig()">
-
         <label>📖 Conteúdo 1 - Título</label>
         <input type="text" id="configConteudo1Titulo" value="🍎 Pirâmide Alimentar" onchange="App.atualizarConteudos()">
-
         <label>📖 Conteúdo 1 - Texto</label>
-        <textarea id="configConteudo1Texto" onchange="App.atualizarConteudos()">A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS).</textarea>
-
+        <textarea id="configConteudo1Texto" onchange="App.atualizarConteudos()">A base da pirâmide tem arroz, pães e frutas (comer MAIS).</textarea>
         <label>📖 Conteúdo 2 - Título</label>
         <input type="text" id="configConteudo2Titulo" value="🤸 Mexa-se!" onchange="App.atualizarConteudos()">
-
         <label>📖 Conteúdo 2 - Texto</label>
         <textarea id="configConteudo2Texto" onchange="App.atualizarConteudos()">1 hora de exercício por dia já faz diferença!</textarea>
-
         <label>🔗 URL do Site</label>
         <input type="text" id="configUrlSite" value="kaua260804-ship-it.github.io/Site-Habitos-Saudaveis" onchange="App.atualizarConfig()">
-
         <button class="btn-success" onclick="App.exportarApresentacao()">💾 Exportar Configuração</button>
         <button class="btn-danger" onclick="App.resetarTudo()">🔄 Resetar Tudo</button>
     </div>
 
     <!-- BOTÕES FLUTUANTES -->
-    <button class="btn-flutuante btn-fullscreen" title="Tela Cheia" onclick="App.toggleFullscreen()">
-        <i class="fas fa-expand"></i>
-    </button>
-    <button class="btn-flutuante btn-config" title="Configurações" onclick="toggleConfig()">
-        <i class="fas fa-cog"></i>
-    </button>
-    <button class="btn-flutuante btn-add-imagem" title="Adicionar Imagem" onclick="App.adicionarImagem()">
-        <i class="fas fa-image"></i>
-    </button>
-    <button class="btn-flutuante btn-voltar" onclick="App.irParaSlide(0)" title="Início">
-        <i class="fas fa-home"></i>
-    </button>
+    <button class="btn-flutuante btn-fullscreen" title="Tela Cheia (F)" onclick="App.toggleFullscreen()"><i class="fas fa-expand"></i></button>
+    <button class="btn-flutuante btn-config" title="Configurações" onclick="toggleConfig()"><i class="fas fa-cog"></i></button>
+    <button class="btn-flutuante btn-add-imagem" title="Adicionar Imagem" onclick="App.adicionarImagem()"><i class="fas fa-image"></i></button>
+    <button class="btn-flutuante btn-voltar" onclick="App.irParaSlide(0)" title="Início"><i class="fas fa-home"></i> Início</button>
 
     <script>
-        // ============================================
-        // APRESENTACAO.JS - EDITOR VISUAL COMPLETO
-        // ============================================
-
         const App = {
             slideAtual: 0,
             totalSlides: 8,
@@ -652,7 +606,6 @@
             tempoQuizSegundos: 180,
             timerInterval: null,
             tempoRestante: 180,
-            modoEdicaoAtivo: true,
 
             slidesIds: [
                 'slide-escolha', 'slide-titulo', 'slide-conteudo1', 'slide-conteudo2',
@@ -689,7 +642,6 @@
             },
 
             init() {
-                console.log('🚀 Inicializando...');
                 this.criarEstrelas();
                 this.configurarBotoes();
                 this.carregarConfigSalva();
@@ -700,149 +652,140 @@
             },
 
             criarEstrelas() {
-                const container = document.getElementById('starsContainer');
+                const c = document.getElementById('starsContainer');
                 for (let i = 0; i < 80; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.left = Math.random() * 100 + '%';
-                    star.style.top = Math.random() * 100 + '%';
-                    star.style.width = (Math.random() * 3 + 1) + 'px';
-                    star.style.height = star.style.width;
-                    star.style.setProperty('--duration', (Math.random() * 3 + 1) + 's');
-                    star.style.setProperty('--delay', Math.random() * 3 + 's');
-                    container.appendChild(star);
+                    const s = document.createElement('div');
+                    s.className = 'star';
+                    s.style.left = Math.random() * 100 + '%';
+                    s.style.top = Math.random() * 100 + '%';
+                    s.style.width = (Math.random() * 3 + 1) + 'px';
+                    s.style.height = s.style.width;
+                    s.style.setProperty('--duration', (Math.random() * 3 + 1) + 's');
+                    s.style.setProperty('--delay', Math.random() * 3 + 's');
+                    c.appendChild(s);
                 }
             },
 
             configurarBotoes() {
-                document.getElementById('btnModo1').addEventListener('click', () => this.escolherModo('alimentacao_exercicios'));
-                document.getElementById('btnModo2').addEventListener('click', () => this.escolherModo('sono_postura'));
-                ['btnSlide1','btnSlide2','btnSlide3','btnSlide5'].forEach(id => {
-                    document.getElementById(id).addEventListener('click', () => this.proximoSlide());
-                });
-                document.getElementById('btnFinalizarQuiz').addEventListener('click', () => this.proximoSlide());
-                document.getElementById('btnProximoQuiz').addEventListener('click', () => this.proximoQuizDemo());
-                document.getElementById('btnIniciarContagem').addEventListener('click', () => this.iniciarContagem());
-                document.getElementById('btnConfetes').addEventListener('click', () => this.dispararConfetes());
-                document.getElementById('btnMostrarRanking').addEventListener('click', () => this.proximoSlide());
+                document.getElementById('btnModo1').onclick = () => this.escolherModo('alimentacao_exercicios');
+                document.getElementById('btnModo2').onclick = () => this.escolherModo('sono_postura');
+                document.getElementById('btnSlide1').onclick = () => this.proximoSlide();
+                document.getElementById('btnSlide2').onclick = () => this.proximoSlide();
+                document.getElementById('btnSlide3').onclick = () => this.proximoSlide();
+                document.getElementById('btnSlide5').onclick = () => this.proximoSlide();
+                document.getElementById('btnFinalizarQuiz').onclick = () => this.proximoSlide();
+                document.getElementById('btnProximoQuiz').onclick = () => this.proximoQuizDemo();
+                document.getElementById('btnIniciarContagem').onclick = () => this.iniciarContagem();
+                document.getElementById('btnConfetes').onclick = () => this.dispararConfetes();
+                document.getElementById('btnMostrarRanking').onclick = () => this.proximoSlide();
             },
 
             tornarTudoEditavel() {
                 document.querySelectorAll('.editavel').forEach(el => {
-                    el.contentEditable = true;
+                    el.contentEditable = 'true';
                     el.addEventListener('blur', () => this.salvarEstado());
                     el.addEventListener('input', () => this.salvarEstado());
                 });
             },
 
-            modoEdicao() {
-                this.modoEdicaoAtual = !this.modoEdicaoAtual;
-                document.querySelectorAll('.editavel').forEach(el => {
-                    el.contentEditable = this.modoEdicaoAtual;
-                    el.style.cursor = this.modoEdicaoAtual ? 'text' : 'default';
-                });
-                const btn = document.querySelector('.toolbar-slide button');
-                if (btn) btn.classList.toggle('ativo', this.modoEdicaoAtual);
-            },
-
             adicionarImagem() {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = (e) => {
+                const inp = document.createElement('input');
+                inp.type = 'file';
+                inp.accept = 'image/*';
+                inp.onchange = (e) => {
                     const file = e.target.files[0];
                     if (!file) return;
                     const reader = new FileReader();
                     reader.onload = (ev) => {
                         const slideAtivo = document.querySelector('.slide.active .slide-content');
                         if (!slideAtivo) return;
-                        
+
                         const container = document.createElement('div');
                         container.className = 'imagem-container';
-                        container.draggable = true;
-                        container.style.left = '10px';
-                        container.style.top = '10px';
-                        
+
                         const img = document.createElement('img');
                         img.src = ev.target.result;
                         img.className = 'imagem-slide';
                         img.style.maxWidth = '200px';
                         img.style.maxHeight = '200px';
-                        
+
                         const controls = document.createElement('div');
                         controls.className = 'imagem-controls';
                         controls.innerHTML = `
-                            <button class="btn-resize" title="Aumentar">+</button>
-                            <button class="btn-resize" title="Diminuir">-</button>
-                            <button class="btn-delete" title="Remover">×</button>
+                            <button class="btn-img-aumentar" title="Aumentar">+</button>
+                            <button class="btn-img-diminuir" title="Diminuir">-</button>
+                            <button class="btn-img-deletar" title="Remover">×</button>
                         `;
-                        
-                        controls.querySelector('.btn-resize:first-child').onclick = (e) => {
-                            e.stopPropagation();
+
+                        // Eventos dos controles
+                        controls.querySelector('.btn-img-aumentar').onclick = (ev2) => {
+                            ev2.stopPropagation();
                             const w = parseInt(img.style.maxWidth) || 200;
-                            img.style.maxWidth = (w + 40) + 'px';
-                            img.style.maxHeight = (w + 40) + 'px';
+                            const novo = w + 40;
+                            img.style.maxWidth = novo + 'px';
+                            img.style.maxHeight = novo + 'px';
                             this.salvarEstado();
                         };
-                        controls.querySelector('.btn-resize:last-child').onclick = (e) => {
-                            e.stopPropagation();
+                        controls.querySelector('.btn-img-diminuir').onclick = (ev2) => {
+                            ev2.stopPropagation();
                             const w = parseInt(img.style.maxWidth) || 200;
                             const novo = Math.max(60, w - 40);
                             img.style.maxWidth = novo + 'px';
                             img.style.maxHeight = novo + 'px';
                             this.salvarEstado();
                         };
-                        controls.querySelector('.btn-delete').onclick = (e) => {
-                            e.stopPropagation();
+                        controls.querySelector('.btn-img-deletar').onclick = (ev2) => {
+                            ev2.stopPropagation();
                             container.remove();
                             this.salvarEstado();
                         };
-                        
+
                         container.appendChild(img);
                         container.appendChild(controls);
-                        
-                        // Drag
-                        let offsetX, offsetY, dragging = false;
-                        container.addEventListener('mousedown', (e) => {
-                            if (e.target.tagName === 'BUTTON') return;
+
+                        // Drag simples
+                        let dragging = false, startX, startY, startLeft, startTop;
+                        container.addEventListener('mousedown', (e2) => {
+                            if (e2.target.tagName === 'BUTTON') return;
                             dragging = true;
-                            container.classList.add('dragging');
-                            offsetX = e.clientX - container.offsetLeft;
-                            offsetY = e.clientY - container.offsetTop;
-                        });
-                        document.addEventListener('mousemove', (e) => {
-                            if (!dragging) return;
+                            startX = e2.clientX;
+                            startY = e2.clientY;
+                            startLeft = container.offsetLeft || 0;
+                            startTop = container.offsetTop || 0;
                             container.style.position = 'relative';
-                            container.style.left = (e.clientX - offsetX) + 'px';
-                            container.style.top = (e.clientY - offsetY) + 'px';
+                            container.style.zIndex = '999';
+                            e2.preventDefault();
+                        });
+                        document.addEventListener('mousemove', (e2) => {
+                            if (!dragging) return;
+                            container.style.left = (startLeft + e2.clientX - startX) + 'px';
+                            container.style.top = (startTop + e2.clientY - startY) + 'px';
                         });
                         document.addEventListener('mouseup', () => {
                             if (dragging) {
                                 dragging = false;
-                                container.classList.remove('dragging');
+                                container.style.zIndex = '';
                                 this.salvarEstado();
                             }
                         });
-                        
+
                         slideAtivo.appendChild(container);
                         this.salvarEstado();
                     };
                     reader.readAsDataURL(file);
                 };
-                input.click();
+                inp.click();
             },
 
             adicionarCaixaTexto() {
                 const slideAtivo = document.querySelector('.slide.active .slide-content');
                 if (!slideAtivo) return;
-                
                 const div = document.createElement('div');
                 div.className = 'editavel';
-                div.contentEditable = true;
-                div.setAttribute('data-placeholder', 'Novo texto...');
+                div.contentEditable = 'true';
+                div.textContent = 'Novo texto...';
                 div.style.cssText = 'margin: 10px 0; font-size: 20px; color: #2d3748; min-height: 30px;';
                 div.addEventListener('blur', () => this.salvarEstado());
-                
                 slideAtivo.appendChild(div);
                 div.focus();
                 this.salvarEstado();
@@ -878,56 +821,87 @@
                     slides.push(content.innerHTML);
                 });
                 localStorage.setItem('apresentacao_slides', JSON.stringify(slides));
-                
                 const imagens = [];
                 document.querySelectorAll('.imagem-slide').forEach(img => {
+                    const container = img.parentElement;
                     imagens.push({
                         src: img.src,
-                        width: img.style.maxWidth,
-                        height: img.style.maxHeight,
-                        left: img.parentElement.style.left,
-                        top: img.parentElement.style.top,
-                        slideId: img.closest('.slide').id
+                        width: img.style.maxWidth || '200px',
+                        height: img.style.maxHeight || '200px',
+                        left: container.style.left || '0px',
+                        top: container.style.top || '0px',
+                        slideId: container.closest('.slide')?.id || ''
                     });
                 });
                 localStorage.setItem('apresentacao_imagens', JSON.stringify(imagens));
-                
-                this.salvarConfig();
             },
 
             carregarImagensSalvas() {
-                const imagens = JSON.parse(localStorage.getItem('apresentacao_imagens') || '[]');
-                imagens.forEach(imgData => {
-                    const slide = document.getElementById(imgData.slideId);
-                    if (!slide) return;
-                    const content = slide.querySelector('.slide-content');
-                    if (!content) return;
-                    
-                    const container = document.createElement('div');
-                    container.className = 'imagem-container';
-                    container.style.left = imgData.left || '10px';
-                    container.style.top = imgData.top || '10px';
-                    
-                    const img = document.createElement('img');
-                    img.src = imgData.src;
-                    img.className = 'imagem-slide';
-                    img.style.maxWidth = imgData.width || '200px';
-                    img.style.maxHeight = imgData.height || '200px';
-                    
-                    container.appendChild(img);
-                    content.appendChild(container);
-                });
+                try {
+                    const imagens = JSON.parse(localStorage.getItem('apresentacao_imagens') || '[]');
+                    imagens.forEach(imgData => {
+                        const slide = document.getElementById(imgData.slideId);
+                        if (!slide || !imgData.src) return;
+                        const content = slide.querySelector('.slide-content');
+                        if (!content) return;
+
+                        const container = document.createElement('div');
+                        container.className = 'imagem-container';
+                        container.style.position = 'relative';
+                        container.style.left = imgData.left;
+                        container.style.top = imgData.top;
+
+                        const img = document.createElement('img');
+                        img.src = imgData.src;
+                        img.className = 'imagem-slide';
+                        img.style.maxWidth = imgData.width;
+                        img.style.maxHeight = imgData.height;
+
+                        const controls = document.createElement('div');
+                        controls.className = 'imagem-controls';
+                        controls.innerHTML = `
+                            <button class="btn-img-aumentar">+</button>
+                            <button class="btn-img-diminuir">-</button>
+                            <button class="btn-img-deletar">×</button>
+                        `;
+                        controls.querySelector('.btn-img-aumentar').onclick = (e) => {
+                            e.stopPropagation();
+                            const w = parseInt(img.style.maxWidth) || 200;
+                            img.style.maxWidth = (w + 40) + 'px';
+                            img.style.maxHeight = (w + 40) + 'px';
+                            this.salvarEstado();
+                        };
+                        controls.querySelector('.btn-img-diminuir').onclick = (e) => {
+                            e.stopPropagation();
+                            const w = parseInt(img.style.maxWidth) || 200;
+                            img.style.maxWidth = Math.max(60, w - 40) + 'px';
+                            img.style.maxHeight = Math.max(60, w - 40) + 'px';
+                            this.salvarEstado();
+                        };
+                        controls.querySelector('.btn-img-deletar').onclick = (e) => {
+                            e.stopPropagation();
+                            container.remove();
+                            this.salvarEstado();
+                        };
+
+                        container.appendChild(img);
+                        container.appendChild(controls);
+                        content.appendChild(container);
+                    });
+                } catch (e) {}
             },
 
             carregarConfigSalva() {
-                const saved = JSON.parse(localStorage.getItem('apresentacao_config') || '{}');
-                if (saved.tempo) { this.tempoQuizSegundos = saved.tempo; document.getElementById('configTempo').value = saved.tempo / 60; }
-                if (saved.fonteTitulo) { document.getElementById('configFonteTitulo').value = saved.fonteTitulo; document.documentElement.style.setProperty('--tamanho-fonte-titulo', saved.fonteTitulo + 'px'); document.getElementById('valorFonteTitulo').textContent = saved.fonteTitulo + 'px'; }
-                if (saved.fonteTexto) { document.getElementById('configFonteTexto').value = saved.fonteTexto; document.documentElement.style.setProperty('--tamanho-fonte-texto', saved.fonteTexto + 'px'); document.getElementById('valorFonteTexto').textContent = saved.fonteTexto + 'px'; }
-                if (saved.fonteEmoji) { document.getElementById('configFonteEmoji').value = saved.fonteEmoji; document.documentElement.style.setProperty('--tamanho-fonte-emoji', saved.fonteEmoji + 'px'); document.getElementById('valorFonteEmoji').textContent = saved.fonteEmoji + 'px'; }
-                if (saved.bgCor) { document.getElementById('configBgCor').value = saved.bgCor; document.body.style.background = saved.bgCor; }
-                if (saved.urlSite) { document.getElementById('configUrlSite').value = saved.urlSite; document.querySelector('[data-id="linkSite"]').textContent = '🔗 ' + saved.urlSite; }
-                document.getElementById('tempoMostrado').textContent = (this.tempoQuizSegundos / 60) + ' minutos';
+                try {
+                    const saved = JSON.parse(localStorage.getItem('apresentacao_config') || '{}');
+                    if (saved.tempo) { this.tempoQuizSegundos = saved.tempo; document.getElementById('configTempo').value = saved.tempo / 60; }
+                    if (saved.fonteTitulo) { document.getElementById('configFonteTitulo').value = saved.fonteTitulo; document.documentElement.style.setProperty('--tamanho-fonte-titulo', saved.fonteTitulo + 'px'); document.getElementById('valorFonteTitulo').textContent = saved.fonteTitulo + 'px'; }
+                    if (saved.fonteTexto) { document.getElementById('configFonteTexto').value = saved.fonteTexto; document.documentElement.style.setProperty('--tamanho-fonte-texto', saved.fonteTexto + 'px'); document.getElementById('valorFonteTexto').textContent = saved.fonteTexto + 'px'; }
+                    if (saved.fonteEmoji) { document.getElementById('configFonteEmoji').value = saved.fonteEmoji; document.documentElement.style.setProperty('--tamanho-fonte-emoji', saved.fonteEmoji + 'px'); document.getElementById('valorFonteEmoji').textContent = saved.fonteEmoji + 'px'; }
+                    if (saved.bgCor) { document.getElementById('configBgCor').value = saved.bgCor; document.body.style.background = saved.bgCor; }
+                    if (saved.urlSite) { document.getElementById('configUrlSite').value = saved.urlSite; const linkEl = document.querySelector('[data-id="linkSite"]'); if (linkEl) linkEl.textContent = '🔗 ' + saved.urlSite; }
+                    document.getElementById('tempoMostrado').textContent = (this.tempoQuizSegundos / 60) + ' minutos';
+                } catch (e) {}
             },
 
             salvarConfig() {
@@ -960,8 +934,7 @@
                 document.documentElement.style.setProperty('--tamanho-fonte-emoji', fe + 'px');
                 document.getElementById('valorFonteEmoji').textContent = fe + 'px';
 
-                const bg = document.getElementById('configBgCor').value;
-                document.body.style.background = bg;
+                document.body.style.background = document.getElementById('configBgCor').value;
 
                 const url = document.getElementById('configUrlSite').value;
                 const linkEl = document.querySelector('[data-id="linkSite"]');
@@ -976,12 +949,10 @@
                 const tx1 = document.getElementById('configConteudo1Texto').value;
                 const t2 = document.getElementById('configConteudo2Titulo').value;
                 const tx2 = document.getElementById('configConteudo2Texto').value;
-
                 const el1t = document.querySelector('[data-id="conteudo1Titulo"]');
                 const el1tx = document.querySelector('[data-id="conteudo1Texto"]');
                 const el2t = document.querySelector('[data-id="conteudo2Titulo"]');
                 const el2tx = document.querySelector('[data-id="conteudo2Texto"]');
-
                 if (el1t && t1) el1t.textContent = t1;
                 if (el1tx && tx1) el1tx.textContent = tx1;
                 if (el2t && t2) el2t.textContent = t2;
@@ -996,11 +967,11 @@
                     exportado_em: new Date().toISOString()
                 };
                 const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = url;
-                a.download = 'apresentacao_backup_' + new Date().toISOString().split('T')[0] + '.json';
+                a.href = URL.createObjectURL(blob);
+                a.download = 'apresentacao_backup.json';
                 a.click();
+                alert('✅ Exportado com sucesso!');
             },
 
             resetarTudo() {
@@ -1015,11 +986,10 @@
             irParaSlide(index) {
                 if (index < 0 || index >= this.totalSlides) return;
                 document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
-                const slideEl = document.getElementById(this.slidesIds[index]);
-                if (slideEl) slideEl.classList.add('active');
+                const el = document.getElementById(this.slidesIds[index]);
+                if (el) el.classList.add('active');
                 this.slideAtual = index;
                 document.getElementById('numSlide').textContent = index + 1;
-
                 if (index === 4 && this.perguntasQuiz.length > 0) this.carregarQuizDemo();
                 if (index === 7) this.carregarRankingFinal();
                 if (index === 6) {
@@ -1035,21 +1005,17 @@
             async escolherModo(modo) {
                 this.modoSelecionado = modo;
                 const dados = this.dadosModos[modo];
-
                 const emojiEl = document.querySelector('[data-id="temaEmoji"]');
                 const tituloEl = document.querySelector('[data-id="temaTitulo"]');
                 const subtituloEl = document.querySelector('[data-id="temaSubtitulo"]');
-
                 if (emojiEl) emojiEl.textContent = dados.emoji;
                 if (tituloEl) { tituloEl.textContent = dados.titulo; tituloEl.className = 'titulo-slide editavel ' + (dados.classeTitulo || ''); }
                 if (subtituloEl) subtituloEl.textContent = dados.subtitulo;
-
                 document.getElementById('configConteudo1Titulo').value = dados.conteudos[0].titulo;
                 document.getElementById('configConteudo1Texto').value = dados.conteudos[0].texto;
                 document.getElementById('configConteudo2Titulo').value = dados.conteudos[1].titulo;
                 document.getElementById('configConteudo2Texto').value = dados.conteudos[1].texto;
                 this.atualizarConteudos();
-
                 this.perguntasQuiz = await this.carregarQuizzesSupabase(dados.temasSupabase);
                 if (this.perguntasQuiz.length === 0) this.perguntasQuiz = dados.quizzesLocal;
                 this.quizDemoIndice = 0;
@@ -1058,69 +1024,50 @@
 
             async carregarQuizzesSupabase(temas) {
                 try {
-                    const url = `https://ejldlvlacidyzizxucdr.supabase.co/rest/v1/quizzes?tema=in.(${temas.join(',')})&select=*&limit=10`;
-                    const response = await fetch(url, { headers: { 'apikey': 'sb_publishable_YDWCWLgn0t9wrayWljnnaA_immbdkj8' } });
-                    const data = await response.json();
-                    if (data && data.length > 0) {
-                        return data.map(q => ({
-                            pergunta: q.pergunta,
-                            opcoes: [q.opcao_a, q.opcao_b, q.opcao_c, q.opcao_d].filter(o => o && o.trim()),
-                            correta: q.correta
-                        }));
-                    }
-                } catch (e) { console.log('Offline'); }
+                    const r = await fetch(`https://ejldlvlacidyzizxucdr.supabase.co/rest/v1/quizzes?tema=in.(${temas.join(',')})&select=*&limit=10`, {
+                        headers: { 'apikey': 'sb_publishable_YDWCWLgn0t9wrayWljnnaA_immbdkj8' }
+                    });
+                    const d = await r.json();
+                    if (d?.length) return d.map(q => ({
+                        pergunta: q.pergunta,
+                        opcoes: [q.opcao_a, q.opcao_b, q.opcao_c, q.opcao_d].filter(o => o?.trim()),
+                        correta: q.correta
+                    }));
+                } catch (e) {}
                 return [];
             },
 
             carregarQuizDemo() {
-                const quizPergunta = document.getElementById('quizPergunta');
-                const quizOpcoes = document.getElementById('quizOpcoes');
-                const quizFeedback = document.getElementById('quizFeedback');
-                const btnProximo = document.getElementById('btnProximoQuiz');
-                const btnFinalizar = document.getElementById('btnFinalizarQuiz');
-
+                const qp = document.getElementById('quizPergunta');
+                const qo = document.getElementById('quizOpcoes');
+                const qf = document.getElementById('quizFeedback');
+                const bp = document.getElementById('btnProximoQuiz');
+                const bf = document.getElementById('btnFinalizarQuiz');
                 if (this.quizDemoIndice >= this.perguntasQuiz.length) {
-                    quizPergunta.textContent = '🎉 Demonstração concluída!';
-                    quizOpcoes.innerHTML = '';
-                    quizFeedback.textContent = '';
-                    btnProximo.style.display = 'none';
-                    btnFinalizar.style.display = 'inline-block';
+                    qp.textContent = '🎉 Demonstração concluída!';
+                    qo.innerHTML = ''; qf.textContent = '';
+                    bp.style.display = 'none'; bf.style.display = 'inline-block';
                     return;
                 }
-
                 const p = this.perguntasQuiz[this.quizDemoIndice];
-                quizPergunta.textContent = '❓ ' + p.pergunta;
-                quizFeedback.textContent = '';
-                quizFeedback.className = 'feedback-quiz';
-                btnProximo.style.display = 'none';
-                btnFinalizar.style.display = 'none';
-
-                let html = '';
-                p.opcoes.forEach((opcao, i) => {
-                    html += `<button class="quiz-option" data-opcao="${i}">${String.fromCharCode(65 + i)}) ${opcao}</button>`;
+                qp.textContent = '❓ ' + p.pergunta;
+                qf.textContent = ''; qf.className = 'feedback-quiz';
+                bp.style.display = 'none'; bf.style.display = 'none';
+                qo.innerHTML = p.opcoes.map((o, i) => `<button class="quiz-option" data-opcao="${i}">${String.fromCharCode(65+i)}) ${o}</button>`).join('');
+                qo.querySelectorAll('.quiz-option').forEach(btn => {
+                    btn.onclick = () => {
+                        const escolha = parseInt(btn.getAttribute('data-opcao'));
+                        qo.querySelectorAll('.quiz-option').forEach((b, i) => {
+                            b.disabled = true;
+                            b.style.pointerEvents = 'none';
+                            if (i === p.correta) b.classList.add('correct');
+                            if (i === escolha && escolha !== p.correta) b.classList.add('wrong');
+                        });
+                        qf.textContent = escolha === p.correta ? '✅ CORRETO! +10 pontos! ⭐' : '❌ A resposta era: ' + p.opcoes[p.correta];
+                        qf.className = 'feedback-quiz ' + (escolha === p.correta ? 'acerto' : 'erro');
+                        bp.style.display = 'inline-block';
+                    };
                 });
-                quizOpcoes.innerHTML = html;
-
-                document.querySelectorAll('.quiz-option').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const escolha = parseInt(e.target.getAttribute('data-opcao'));
-                        this.responderQuiz(escolha);
-                    });
-                });
-            },
-
-            responderQuiz(escolha) {
-                const p = this.perguntasQuiz[this.quizDemoIndice];
-                document.querySelectorAll('.quiz-option').forEach((btn, i) => {
-                    btn.disabled = true;
-                    btn.style.pointerEvents = 'none';
-                    if (i === p.correta) btn.classList.add('correct');
-                    if (i === escolha && escolha !== p.correta) btn.classList.add('wrong');
-                });
-                const fb = document.getElementById('quizFeedback');
-                fb.textContent = escolha === p.correta ? '✅ CORRETO! +10 pontos! ⭐' : '❌ A resposta era: ' + p.opcoes[p.correta];
-                fb.className = 'feedback-quiz ' + (escolha === p.correta ? 'acerto' : 'erro');
-                document.getElementById('btnProximoQuiz').style.display = 'inline-block';
             },
 
             proximoQuizDemo() { this.quizDemoIndice++; this.carregarQuizDemo(); },
@@ -1139,7 +1086,7 @@
             iniciarTimerQuiz() {
                 this.tempoRestante = this.tempoQuizSegundos;
                 const timerEl = document.getElementById('timerQuiz');
-                const btnRanking = document.getElementById('btnMostrarRanking');
+                const btnR = document.getElementById('btnMostrarRanking');
                 timerEl.style.display = 'block';
                 this.atualizarTimerDisplay();
                 this.timerInterval = setInterval(() => {
@@ -1150,23 +1097,25 @@
                         clearInterval(this.timerInterval);
                         timerEl.textContent = '⏰ Tempo esgotado!';
                         document.getElementById('contador').textContent = 'FIM!';
-                        btnRanking.style.display = 'inline-block';
+                        btnR.style.display = 'inline-block';
                         this.dispararConfetes();
                     }
                 }, 1000);
-                btnRanking.style.display = 'inline-block';
+                btnR.style.display = 'inline-block';
             },
 
             atualizarTimerDisplay() {
-                const min = Math.floor(this.tempoRestante / 60);
-                const seg = this.tempoRestante % 60;
-                document.getElementById('timerQuiz').textContent = `⏱️ ${String(min).padStart(2,'0')}:${String(seg).padStart(2,'0')}`;
+                const m = Math.floor(this.tempoRestante / 60);
+                const s = this.tempoRestante % 60;
+                document.getElementById('timerQuiz').textContent = `⏱️ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
             },
 
             async carregarRankingFinal() {
                 const c = document.getElementById('rankingFinal');
                 try {
-                    const r = await fetch('https://ejldlvlacidyzizxucdr.supabase.co/rest/v1/usuarios?select=apelido,pontos&order=pontos.desc&limit=5', { headers: { 'apikey': 'sb_publishable_YDWCWLgn0t9wrayWljnnaA_immbdkj8' } });
+                    const r = await fetch('https://ejldlvlacidyzizxucdr.supabase.co/rest/v1/usuarios?select=apelido,pontos&order=pontos.desc&limit=5', {
+                        headers: { 'apikey': 'sb_publishable_YDWCWLgn0t9wrayWljnnaA_immbdkj8' }
+                    });
                     const d = await r.json();
                     c.innerHTML = d?.length ? d.map((j,i) => `<div class="ranking-item" style="animation-delay:${i*0.2}s">${['🥇','🥈','🥉'][i]||`${i+1}º`} <strong>${j.apelido}</strong> — ⭐ ${j.pontos} pts</div>`).join('') : '<p>🥇 1º: ______<br>🥈 2º: ______<br>🥉 3º: ______</p>';
                 } catch(e) { c.innerHTML = '<p>🥇 1º: ______<br>🥈 2º: ______<br>🥉 3º: ______</p>'; }
@@ -1195,10 +1144,8 @@
         };
 
         function toggleConfig() {
-            const panel = document.getElementById('configPanel');
-            const overlay = document.getElementById('overlay');
-            panel.classList.toggle('open');
-            overlay.classList.toggle('show');
+            document.getElementById('configPanel').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('show');
         }
 
         document.addEventListener('keydown', (e) => {
