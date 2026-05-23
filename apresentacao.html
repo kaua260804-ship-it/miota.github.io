@@ -7,17 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* ============================================
-           CSS COMPLETO DA APRESENTAÇÃO
-           ============================================ */
         :root {
             --bg: #0f0f23;
-            --tempo-quiz: 180; /* segundos (3 min) */
+            --tempo-quiz: 180;
             --tamanho-fonte-titulo: 52px;
             --tamanho-fonte-texto: 22px;
             --tamanho-fonte-emoji: 120px;
-            --cor-modo1: #48bb78;
-            --cor-modo2: #9f7aea;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,10 +23,6 @@
             min-height: 100vh;
             overflow: hidden;
             user-select: none;
-            transition: background 0.5s;
-        }
-        body.tela-cheia {
-            background: #000;
         }
 
         /* ESTRELAS */
@@ -76,6 +67,7 @@
             width: 100%; text-align: center;
             box-shadow: 0 30px 80px rgba(0,0,0,0.4);
             position: relative; z-index: 3;
+            overflow: visible;
         }
         @keyframes pulse {
             0%,100% { transform: scale(1); }
@@ -96,7 +88,6 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* EMOJIS */
         .emoji-gigante {
             font-size: var(--tamanho-fonte-emoji);
             animation: float 3s ease-in-out infinite;
@@ -110,7 +101,6 @@
             display: inline-block; pointer-events: none;
         }
 
-        /* TÍTULOS */
         .titulo-slide {
             font-size: var(--tamanho-fonte-titulo);
             font-weight: 900;
@@ -123,14 +113,14 @@
             margin: 15px 0; line-height: 1.2;
         }
         .titulo-slide.modo1 {
-            background: linear-gradient(135deg, var(--cor-modo1), #059669, #667eea);
+            background: linear-gradient(135deg, #48bb78, #059669, #667eea);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .titulo-slide.modo2 {
-            background: linear-gradient(135deg, var(--cor-modo2), #6d28d9, #f59e0b);
+            background: linear-gradient(135deg, #9f7aea, #6d28d9, #f59e0b);
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -141,7 +131,6 @@
             margin-bottom: 10px; font-weight: 600;
         }
 
-        /* BOTÕES */
         .btn-container {
             display: flex; gap: 20px;
             justify-content: center; flex-wrap: wrap;
@@ -162,7 +151,6 @@
             transform: translateY(-8px) scale(1.03);
             box-shadow: 0 25px 50px rgba(0,0,0,0.3);
         }
-        .btn-escolha:active { transform: scale(0.95); }
         .btn-escolha.modo1 { background: linear-gradient(135deg, #48bb78, #059669); }
         .btn-escolha.modo2 { background: linear-gradient(135deg, #9f7aea, #6d28d9); }
         .btn-emoji { font-size: 50px; display: block; margin-bottom: 5px; pointer-events: none; }
@@ -181,15 +169,10 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(102,126,234,0.6);
         }
-        .btn-nav.amarelo {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            box-shadow: 0 10px 30px rgba(245,158,11,0.4);
-        }
-        .btn-nav.verde {
-            background: linear-gradient(135deg, #48bb78, #38a169);
-        }
+        .btn-nav.amarelo { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-nav.verde { background: linear-gradient(135deg, #48bb78, #38a169); }
+        .btn-nav.vermelho { background: linear-gradient(135deg, #ef4444, #dc2626); }
 
-        /* QUIZ */
         .quiz-option {
             display: block; width: 100%;
             padding: 18px 25px; margin: 12px 0;
@@ -208,7 +191,6 @@
         .quiz-option.correct {
             border-color: #48bb78 !important;
             background: #f0fff4 !important;
-            animation: pulse 0.5s ease 2;
         }
         .quiz-option.wrong {
             border-color: #ef4444 !important;
@@ -224,7 +206,6 @@
         .feedback-quiz.acerto { color: #48bb78; }
         .feedback-quiz.erro { color: #ef4444; }
 
-        /* CONTADOR */
         .contador {
             font-size: 150px; font-weight: 900;
             background: linear-gradient(135deg, #f59e0b, #ef4444);
@@ -240,13 +221,10 @@
             animation: pulse 0.3s ease infinite;
         }
 
-        /* REGRAS */
         .regras-lista {
             font-size: 22px; line-height: 2;
             text-align: left; max-width: 500px; margin: 0 auto;
         }
-
-        /* RANKING */
         .ranking-lista { text-align: left; font-size: 24px; }
         .ranking-item {
             padding: 15px; margin: 8px 0; border-radius: 15px;
@@ -256,7 +234,6 @@
             animation-fill-mode: both;
         }
 
-        /* LINK */
         .site-link {
             font-size: 18px; color: #667eea; font-weight: 700;
             word-break: break-all; background: #eff6ff;
@@ -264,14 +241,12 @@
             display: inline-block; margin: 10px 0;
         }
 
-        /* TEMPO DO QUIZ */
         .timer-quiz {
             font-size: 40px; font-weight: 900; color: #667eea;
             margin: 10px 0;
         }
         .timer-quiz.urgente { color: #ef4444; animation: pulse 0.5s ease infinite; }
 
-        /* CONFETES */
         .confetti {
             position: fixed; top: -20px; z-index: 9999;
             pointer-events: none; font-size: 35px;
@@ -281,24 +256,103 @@
             100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
         }
 
+        /* ========== ELEMENTOS EDITÁVEIS ========== */
+        .editavel {
+            cursor: text;
+            transition: all 0.2s;
+            border-radius: 6px;
+            padding: 4px 8px;
+            position: relative;
+            min-width: 20px;
+            min-height: 20px;
+            outline: none;
+        }
+        .editavel:hover {
+            background: rgba(102,126,234,0.05);
+            outline: 2px dashed #667eea;
+            outline-offset: 3px;
+        }
+        .editavel:focus {
+            background: rgba(102,126,234,0.08);
+            outline: 3px solid #667eea;
+            outline-offset: 3px;
+            box-shadow: 0 0 0 8px rgba(102,126,234,0.1);
+        }
+        .editavel:empty::before {
+            content: attr(data-placeholder);
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        /* ========== IMAGENS NO SLIDE ========== */
+        .imagem-slide {
+            max-width: 200px;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 15px;
+            cursor: move;
+            transition: all 0.2s;
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+        .imagem-slide:hover {
+            outline: 3px dashed #667eea;
+            outline-offset: 5px;
+            transform: scale(1.02);
+        }
+        .imagem-slide.dragging {
+            opacity: 0.7;
+            outline: 4px solid #667eea;
+            z-index: 999;
+        }
+        .imagem-container {
+            display: inline-block;
+            position: relative;
+            margin: 10px;
+            cursor: move;
+        }
+        .imagem-container:hover .imagem-controls {
+            opacity: 1;
+        }
+        .imagem-controls {
+            position: absolute;
+            top: -15px; right: -15px;
+            display: flex; gap: 5px;
+            opacity: 0; transition: opacity 0.2s;
+            z-index: 200;
+        }
+        .imagem-controls button {
+            width: 30px; height: 30px;
+            border-radius: 50%; border: none;
+            cursor: pointer; font-size: 14px;
+            color: white; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .imagem-controls .btn-resize { background: #667eea; }
+        .imagem-controls .btn-delete { background: #ef4444; }
+        .imagem-controls button:hover { transform: scale(1.2); }
+
         /* ========== PAINEL DE CONFIGURAÇÃO ========== */
         .config-panel {
-            position: fixed; top: 0; right: -420px;
-            width: 400px; height: 100vh;
+            position: fixed; top: 0; right: -450px;
+            width: 430px; height: 100vh;
             background: white; z-index: 9999;
             box-shadow: -10px 0 40px rgba(0,0,0,0.3);
             transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             overflow-y: auto; padding: 25px;
-            display: flex; flex-direction: column; gap: 15px;
+            display: flex; flex-direction: column; gap: 12px;
         }
         .config-panel.open { right: 0; }
         .config-panel h3 {
-            font-size: 22px; color: #2d3748;
+            font-size: 20px; color: #2d3748;
             border-bottom: 2px solid #667eea; padding-bottom: 10px;
+            margin-bottom: 5px;
         }
         .config-panel label {
-            font-size: 13px; font-weight: 600;
-            color: #4a5568; display: block; margin-bottom: 4px;
+            font-size: 12px; font-weight: 600;
+            color: #4a5568; display: block; margin-bottom: 2px;
+            text-transform: uppercase; letter-spacing: 0.5px;
         }
         .config-panel input,
         .config-panel select,
@@ -307,13 +361,16 @@
             border: 2px solid #e2e8f0; border-radius: 10px;
             font-size: 14px; font-family: 'Poppins', sans-serif;
         }
-        .config-panel textarea {
-            min-height: 80px; resize: vertical;
-        }
+        .config-panel textarea { min-height: 70px; resize: vertical; }
         .config-panel input:focus,
         .config-panel textarea:focus {
             outline: none; border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+        }
+        .config-panel input[type="range"] { padding: 0; border: none; }
+        .config-panel input[type="color"] {
+            width: 50px; height: 35px; padding: 2px;
+            border-radius: 8px; cursor: pointer;
         }
         .config-panel button {
             background: linear-gradient(135deg, #667eea, #764ba2);
@@ -323,8 +380,33 @@
             transition: 0.3s;
         }
         .config-panel button:hover { transform: scale(1.02); }
-        .config-panel .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+        .config-panel .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .config-panel .btn-success { background: linear-gradient(135deg, #48bb78, #38a169); }
+
+        /* ========== BARRA DE FERRAMENTAS DO SLIDE ========== */
+        .toolbar-slide {
+            position: fixed; top: 15px; left: 50%;
+            transform: translateX(-50%);
+            background: white; border-radius: 20px;
+            padding: 8px 20px; display: flex; gap: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9998; align-items: center;
+            transition: opacity 0.3s;
+        }
+        .toolbar-slide.hidden { opacity: 0; pointer-events: none; }
+        .toolbar-slide button {
+            background: none; border: none;
+            font-size: 16px; cursor: pointer;
+            padding: 8px 12px; border-radius: 10px;
+            transition: 0.2s; color: #4a5568;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600; white-space: nowrap;
+        }
+        .toolbar-slide button:hover { background: #f0f0f0; color: #667eea; }
+        .toolbar-slide button.ativo { background: #667eea; color: white; }
+        .toolbar-slide .separator {
+            width: 1px; height: 25px;
+            background: #e2e8f0; margin: 0 5px;
         }
 
         /* BOTÕES FLUTUANTES */
@@ -339,9 +421,9 @@
         .btn-flutuante:hover { transform: scale(1.1); }
         .btn-fullscreen { bottom: 20px; right: 80px; background: #667eea; }
         .btn-config { bottom: 20px; right: 20px; background: #f59e0b; }
-        .btn-voltar { bottom: 20px; left: 20px; background: #a0aec0; font-size: 16px; width: auto; padding: 0 18px; border-radius: 25px; }
+        .btn-voltar { bottom: 20px; left: 20px; background: #a0aec0; font-size: 14px; width: auto; padding: 0 18px; border-radius: 25px; }
+        .btn-add-imagem { bottom: 20px; left: 140px; background: #48bb78; font-size: 18px; }
 
-        /* OVERLAY */
         .overlay {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -350,102 +432,96 @@
         }
         .overlay.show { display: block; }
 
-        /* CONTEÚDO EDITÁVEL */
-        [contenteditable="true"] {
-            outline: 2px dashed #667eea;
-            outline-offset: 4px;
-            border-radius: 8px;
-            padding: 5px 10px;
-            cursor: text;
-        }
-        [contenteditable="true"]:focus {
-            outline: 3px solid #667eea;
-            background: #f7fafc;
-        }
-        .edit-indicator {
-            display: inline-block;
-            font-size: 12px; color: #667eea;
-            margin-left: 8px; opacity: 0.7;
-        }
-
-        /* RESPONSIVO */
         @media (max-width: 768px) {
             .slide-content { padding: 25px 20px; border-radius: 25px; max-width: 95vw; }
             .titulo-slide { font-size: 28px !important; }
             .subtitulo { font-size: 16px; }
             .emoji-gigante { font-size: 60px !important; }
-            .emoji-medio { font-size: 40px; }
             .btn-escolha { padding: 15px 20px; font-size: 16px; min-width: 150px; }
             .btn-nav { padding: 12px 24px; font-size: 16px; }
             .quiz-option { font-size: 16px; padding: 12px 15px; }
             .contador { font-size: 80px; }
-            .regras-lista { font-size: 16px; }
             .config-panel { width: 100%; right: -100%; }
+            .toolbar-slide { padding: 6px 12px; gap: 4px; }
+            .toolbar-slide button { font-size: 12px; padding: 6px 8px; }
         }
     </style>
 </head>
 <body>
-    <!-- ESTRELAS -->
     <div class="stars" id="starsContainer"></div>
 
-    <!-- CONTAINER PRINCIPAL -->
+    <!-- BARRA DE FERRAMENTAS -->
+    <div class="toolbar-slide" id="toolbar">
+        <button onclick="App.modoEdicao()" title="Ativar/Desativar edição"><i class="fas fa-edit"></i> Editar</button>
+        <span class="separator"></span>
+        <button onclick="App.adicionarImagem()" title="Adicionar imagem"><i class="fas fa-image"></i> Imagem</button>
+        <button onclick="App.adicionarCaixaTexto()" title="Adicionar caixa de texto"><i class="fas fa-font"></i> Texto</button>
+        <span class="separator"></span>
+        <button onclick="App.negrito()" title="Negrito"><i class="fas fa-bold"></i></button>
+        <button onclick="App.italico()" title="Itálico"><i class="fas fa-italic"></i></button>
+        <button onclick="App.aumentarFonte()" title="Aumentar fonte">A+</button>
+        <button onclick="App.diminuirFonte()" title="Diminuir fonte">A-</button>
+        <span class="separator"></span>
+        <button onclick="App.alinharEsquerda()" title="Alinhar esquerda"><i class="fas fa-align-left"></i></button>
+        <button onclick="App.alinharCentro()" title="Alinhar centro"><i class="fas fa-align-center"></i></button>
+        <button onclick="App.alinharDireita()" title="Alinhar direita"><i class="fas fa-align-right"></i></button>
+        <span class="separator"></span>
+        <span style="font-size: 11px; color: #a0aec0;">Slide <strong id="numSlide">1</strong>/8</span>
+    </div>
+
     <div class="slide-container" id="slideContainer">
 
         <!-- SLIDE 0: ESCOLHER MODO -->
-        <div class="slide active" id="slide-escolha">
-            <div class="slide-content">
+        <div class="slide active" id="slide-escolha" data-num="0">
+            <div class="slide-content" id="content-escolha">
                 <div class="emoji-gigante">🎮</div>
-                <h1 class="titulo-slide">Quiz Interativo!</h1>
-                <p class="subtitulo">Escolha o tema da apresentação:</p>
+                <h1 class="titulo-slide editavel" data-id="titulo-escolha" data-placeholder="Título do slide">Quiz Interativo!</h1>
+                <p class="subtitulo editavel" data-id="subtitulo-escolha" data-placeholder="Subtítulo">Escolha o tema da apresentação:</p>
                 <div class="btn-container">
                     <button class="btn-escolha modo1" id="btnModo1">
                         <span class="btn-emoji">🍎🤸</span>
-                        <span id="labelModo1">Alimentação + Exercícios</span>
+                        <span class="editavel" data-id="labelModo1" data-placeholder="Nome do modo 1">Alimentação + Exercícios</span>
                     </button>
                     <button class="btn-escolha modo2" id="btnModo2">
                         <span class="btn-emoji">😴📚</span>
-                        <span id="labelModo2">Sono + Postura</span>
+                        <span class="editavel" data-id="labelModo2" data-placeholder="Nome do modo 2">Sono + Postura</span>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- SLIDE 1: TÍTULO -->
-        <div class="slide" id="slide-titulo">
-            <div class="slide-content">
-                <div class="emoji-gigante" id="temaEmoji">🍎</div>
-                <h1 class="titulo-slide" id="temaTitulo">Alimentação Saudável</h1>
-                <p class="subtitulo" id="temaSubtitulo">Vamos aprender juntos!</p>
+        <div class="slide" id="slide-titulo" data-num="1">
+            <div class="slide-content" id="content-titulo">
+                <div class="emoji-gigante editavel" data-id="temaEmoji" data-placeholder="😀">🍎</div>
+                <h1 class="titulo-slide editavel" data-id="temaTitulo" data-placeholder="Título do tema">Alimentação Saudável</h1>
+                <p class="subtitulo editavel" data-id="temaSubtitulo" data-placeholder="Subtítulo do tema">Vamos aprender juntos!</p>
                 <button class="btn-nav" id="btnSlide1">▶️ Bora lá!</button>
             </div>
         </div>
 
         <!-- SLIDE 2: CONTEÚDO 1 -->
-        <div class="slide" id="slide-conteudo1">
-            <div class="slide-content">
+        <div class="slide" id="slide-conteudo1" data-num="2">
+            <div class="slide-content" id="content-conteudo1">
                 <div class="emoji-medio">📖</div>
-                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" id="conteudo1Titulo">Tema 1</h2>
-                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" id="conteudo1Texto">
-                    Carregando...
-                </p>
+                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" class="editavel" data-id="conteudo1Titulo" data-placeholder="Título do conteúdo">🍎 Pirâmide Alimentar</h2>
+                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="conteudo1Texto" data-placeholder="Digite o conteúdo aqui...">A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS). Um prato colorido é um prato saudável! 🌈</p>
                 <button class="btn-nav" id="btnSlide2">▶️ Entendi!</button>
             </div>
         </div>
 
         <!-- SLIDE 3: CONTEÚDO 2 -->
-        <div class="slide" id="slide-conteudo2">
-            <div class="slide-content">
+        <div class="slide" id="slide-conteudo2" data-num="3">
+            <div class="slide-content" id="content-conteudo2">
                 <div class="emoji-medio">💡</div>
-                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" id="conteudo2Titulo">Tema 2</h2>
-                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" id="conteudo2Texto">
-                    Carregando...
-                </p>
+                <h2 style="font-size: 36px; color: #2d3748; margin: 10px 0;" class="editavel" data-id="conteudo2Titulo" data-placeholder="Título do conteúdo">🤸 Mexa-se!</h2>
+                <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="conteudo2Texto" data-placeholder="Digite o conteúdo aqui...">1 hora de exercício por dia já faz diferença! Pular corda, jogar bola ou andar de bicicleta fortalece os ossos e libera endorfina! 😄</p>
                 <button class="btn-nav" id="btnSlide3">▶️ Próximo!</button>
             </div>
         </div>
 
-        <!-- SLIDE 4: QUIZ DEMO -->
-        <div class="slide" id="slide-quiz">
+        <!-- SLIDE 4: QUIZ -->
+        <div class="slide" id="slide-quiz" data-num="4">
             <div class="slide-content">
                 <div class="emoji-medio">❓</div>
                 <h2 style="font-size: 30px; color: #667eea; margin-bottom: 15px;">Vamos testar!</h2>
@@ -458,11 +534,11 @@
         </div>
 
         <!-- SLIDE 5: REGRAS -->
-        <div class="slide" id="slide-regras">
-            <div class="slide-content">
+        <div class="slide" id="slide-regras" data-num="5">
+            <div class="slide-content" id="content-regras">
                 <div class="emoji-medio">🏆</div>
                 <h1 class="titulo-slide" style="font-size: 40px;">Competição!</h1>
-                <div class="regras-lista">
+                <div class="regras-lista editavel" data-id="regrasTexto" data-placeholder="Regras da competição...">
                     <p>🥇 <strong>1º lugar:</strong> Prêmio especial!</p>
                     <p>🥈 <strong>2º lugar:</strong> Prêmio</p>
                     <p>🥉 <strong>3º lugar:</strong> Prêmio</p>
@@ -474,26 +550,26 @@
             </div>
         </div>
 
-        <!-- SLIDE 6: CONTAGEM + TIMER -->
-        <div class="slide" id="slide-contagem">
+        <!-- SLIDE 6: CONTAGEM -->
+        <div class="slide" id="slide-contagem" data-num="6">
             <div class="slide-content">
                 <div class="emoji-medio">⏰</div>
                 <h2 style="font-size: 36px; color: #2d3748;">Preparem-se!</h2>
                 <p style="font-size: 20px; color: #718096; margin: 10px 0;">
                     Abram o site no celular ou computador:
                 </p>
-                <p class="site-link">
+                <p class="site-link editavel" data-id="linkSite" data-placeholder="URL do site">
                     🔗 kaua260804-ship-it.github.io/Site-Habitos-Saudaveis
                 </p>
                 <div class="timer-quiz" id="timerQuiz" style="display: none;">⏱️ 00:00</div>
                 <div class="contador" id="contador" style="margin: 20px 0;">3</div>
                 <button class="btn-nav amarelo" id="btnIniciarContagem">🎮 Iniciar!</button>
-                <button class="btn-nav verde" id="btnMostrarRanking" style="display: none;" onclick="App.proximoSlide()">🏆 Ver Resultado!</button>
+                <button class="btn-nav verde" id="btnMostrarRanking" style="display: none;">🏆 Ver Resultado!</button>
             </div>
         </div>
 
         <!-- SLIDE 7: RANKING -->
-        <div class="slide" id="slide-ranking">
+        <div class="slide" id="slide-ranking" data-num="7">
             <div class="slide-content">
                 <div class="emoji-gigante">🏆</div>
                 <h1 class="titulo-slide" style="font-size: 42px;">Resultado Final!</h1>
@@ -514,59 +590,57 @@
         <label>⏱️ Tempo do Quiz (minutos)</label>
         <input type="number" id="configTempo" value="3" min="1" max="60" onchange="App.atualizarConfig()">
 
-        <label>📝 Tamanho da Fonte (títulos)</label>
+        <label>📝 Fonte Títulos</label>
         <input type="range" id="configFonteTitulo" value="52" min="30" max="80" oninput="App.atualizarConfig()">
-        <span style="font-size: 12px; color: #a0aec0;">Atual: <span id="valorFonteTitulo">52px</span></span>
+        <span style="font-size: 11px;">Atual: <span id="valorFonteTitulo">52px</span></span>
 
-        <label>📝 Tamanho da Fonte (textos)</label>
+        <label>📝 Fonte Textos</label>
         <input type="range" id="configFonteTexto" value="22" min="14" max="36" oninput="App.atualizarConfig()">
-        <span style="font-size: 12px; color: #a0aec0;">Atual: <span id="valorFonteTexto">22px</span></span>
+        <span style="font-size: 11px;">Atual: <span id="valorFonteTexto">22px</span></span>
 
-        <label>😀 Tamanho dos Emojis</label>
+        <label>😀 Fonte Emojis</label>
         <input type="range" id="configFonteEmoji" value="120" min="60" max="180" oninput="App.atualizarConfig()">
-        <span style="font-size: 12px; color: #a0aec0;">Atual: <span id="valorFonteEmoji">120px</span></span>
+        <span style="font-size: 11px;">Atual: <span id="valorFonteEmoji">120px</span></span>
 
-        <label>🎨 Nome do Modo 1</label>
-        <input type="text" id="configNomeModo1" value="Alimentação + Exercícios" onchange="App.atualizarLabels()">
-
-        <label>🎨 Nome do Modo 2</label>
-        <input type="text" id="configNomeModo2" value="Sono + Postura" onchange="App.atualizarLabels()">
+        <label>🎨 Cor de Fundo</label>
+        <input type="color" id="configBgCor" value="#0f0f23" onchange="App.atualizarConfig()">
 
         <label>📖 Conteúdo 1 - Título</label>
         <input type="text" id="configConteudo1Titulo" value="🍎 Pirâmide Alimentar" onchange="App.atualizarConteudos()">
 
         <label>📖 Conteúdo 1 - Texto</label>
-        <textarea id="configConteudo1Texto" onchange="App.atualizarConteudos()">A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS). Um prato colorido é um prato saudável! 🌈</textarea>
+        <textarea id="configConteudo1Texto" onchange="App.atualizarConteudos()">A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS).</textarea>
 
         <label>📖 Conteúdo 2 - Título</label>
         <input type="text" id="configConteudo2Titulo" value="🤸 Mexa-se!" onchange="App.atualizarConteudos()">
 
         <label>📖 Conteúdo 2 - Texto</label>
-        <textarea id="configConteudo2Texto" onchange="App.atualizarConteudos()">1 hora de exercício por dia já faz diferença! Pular corda, jogar bola ou andar de bicicleta fortalece os ossos e libera endorfina, o hormônio da felicidade! 😄</textarea>
+        <textarea id="configConteudo2Texto" onchange="App.atualizarConteudos()">1 hora de exercício por dia já faz diferença!</textarea>
 
-        <button onclick="App.duplicarQuizSlide()">📋 Duplicar Questões do Quiz</button>
-        <button class="btn-danger" onclick="App.resetarTudo()">🔄 Resetar Padrões</button>
+        <label>🔗 URL do Site</label>
+        <input type="text" id="configUrlSite" value="kaua260804-ship-it.github.io/Site-Habitos-Saudaveis" onchange="App.atualizarConfig()">
 
-        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #a0aec0; text-align: center;">
-            ⚙️ As alterações são salvas automaticamente<br>
-            🖱️ Clique duplo nos textos para editar ao vivo
-        </div>
+        <button class="btn-success" onclick="App.exportarApresentacao()">💾 Exportar Configuração</button>
+        <button class="btn-danger" onclick="App.resetarTudo()">🔄 Resetar Tudo</button>
     </div>
 
     <!-- BOTÕES FLUTUANTES -->
-    <button class="btn-flutuante btn-fullscreen" id="btnFullscreen" title="Tela Cheia (F11)" onclick="App.toggleFullscreen()">
+    <button class="btn-flutuante btn-fullscreen" title="Tela Cheia" onclick="App.toggleFullscreen()">
         <i class="fas fa-expand"></i>
     </button>
     <button class="btn-flutuante btn-config" title="Configurações" onclick="toggleConfig()">
         <i class="fas fa-cog"></i>
     </button>
-    <button class="btn-flutuante btn-voltar" onclick="App.irParaSlide(0)" title="Voltar ao início">
-        <i class="fas fa-home"></i> Início
+    <button class="btn-flutuante btn-add-imagem" title="Adicionar Imagem" onclick="App.adicionarImagem()">
+        <i class="fas fa-image"></i>
+    </button>
+    <button class="btn-flutuante btn-voltar" onclick="App.irParaSlide(0)" title="Início">
+        <i class="fas fa-home"></i>
     </button>
 
     <script>
         // ============================================
-        // APRESENTACAO.JS - SISTEMA COMPLETO
+        // APRESENTACAO.JS - EDITOR VISUAL COMPLETO
         // ============================================
 
         const App = {
@@ -575,9 +649,10 @@
             modoSelecionado: null,
             quizDemoIndice: 0,
             perguntasQuiz: [],
-            tempoQuizSegundos: 180, // 3 minutos padrão
+            tempoQuizSegundos: 180,
             timerInterval: null,
             tempoRestante: 180,
+            modoEdicaoAtivo: true,
 
             slidesIds: [
                 'slide-escolha', 'slide-titulo', 'slide-conteudo1', 'slide-conteudo2',
@@ -586,10 +661,8 @@
 
             dadosModos: {
                 alimentacao_exercicios: {
-                    emoji: '🍎🤸',
-                    titulo: 'Alimentação + Exercícios',
-                    subtitulo: 'Comer bem e se mexer!',
-                    classeTitulo: 'modo1',
+                    emoji: '🍎🤸', titulo: 'Alimentação + Exercícios',
+                    subtitulo: 'Comer bem e se mexer!', classeTitulo: 'modo1',
                     conteudos: [
                         { titulo: '🍎 Pirâmide Alimentar', texto: 'A base da pirâmide tem arroz, pães e frutas (comer MAIS). O topo tem doces e frituras (comer MENOS). Um prato colorido é um prato saudável! 🌈' },
                         { titulo: '🤸 Mexa-se!', texto: '1 hora de exercício por dia já faz diferença! Pular corda, jogar bola ou andar de bicicleta fortalece os ossos e libera endorfina, o hormônio da felicidade! 😄' }
@@ -601,10 +674,8 @@
                     temasSupabase: ['alimentacao', 'exercicios']
                 },
                 sono_postura: {
-                    emoji: '😴📚',
-                    titulo: 'Sono + Postura',
-                    subtitulo: 'Dormir bem e sentar direitinho!',
-                    classeTitulo: 'modo2',
+                    emoji: '😴📚', titulo: 'Sono + Postura',
+                    subtitulo: 'Dormir bem e sentar direitinho!', classeTitulo: 'modo2',
                     conteudos: [
                         { titulo: '😴 Sono dos Campeões', texto: 'Crianças precisam dormir de 8 a 12 horas por noite! Desligue o celular 1 hora antes de dormir. Um quarto escuro e silencioso ajuda a dormir melhor! 🌙' },
                         { titulo: '📚 Postura Nota 10', texto: 'Costas retas, pés no chão! A mochila deve ser usada nas DUAS costas e pesar no máximo 10% do seu corpo. Levante o celular na altura dos olhos para não curvar o pescoço! 🎒' }
@@ -618,13 +689,14 @@
             },
 
             init() {
-                console.log('🚀 Inicializando apresentação...');
+                console.log('🚀 Inicializando...');
                 this.criarEstrelas();
                 this.configurarBotoes();
                 this.carregarConfigSalva();
-                this.tornarTextosEditaveis();
+                this.carregarImagensSalvas();
+                this.tornarTudoEditavel();
                 this.irParaSlide(0);
-                console.log('✅ Apresentação pronta!');
+                console.log('✅ Pronto! Clique nos textos para editar.');
             },
 
             criarEstrelas() {
@@ -645,10 +717,9 @@
             configurarBotoes() {
                 document.getElementById('btnModo1').addEventListener('click', () => this.escolherModo('alimentacao_exercicios'));
                 document.getElementById('btnModo2').addEventListener('click', () => this.escolherModo('sono_postura'));
-                document.getElementById('btnSlide1').addEventListener('click', () => this.proximoSlide());
-                document.getElementById('btnSlide2').addEventListener('click', () => this.proximoSlide());
-                document.getElementById('btnSlide3').addEventListener('click', () => this.proximoSlide());
-                document.getElementById('btnSlide5').addEventListener('click', () => this.proximoSlide());
+                ['btnSlide1','btnSlide2','btnSlide3','btnSlide5'].forEach(id => {
+                    document.getElementById(id).addEventListener('click', () => this.proximoSlide());
+                });
                 document.getElementById('btnFinalizarQuiz').addEventListener('click', () => this.proximoSlide());
                 document.getElementById('btnProximoQuiz').addEventListener('click', () => this.proximoQuizDemo());
                 document.getElementById('btnIniciarContagem').addEventListener('click', () => this.iniciarContagem());
@@ -656,43 +727,206 @@
                 document.getElementById('btnMostrarRanking').addEventListener('click', () => this.proximoSlide());
             },
 
-            tornarTextosEditaveis() {
-                const idsEditaveis = ['conteudo1Titulo', 'conteudo1Texto', 'conteudo2Titulo', 'conteudo2Texto', 'temaTitulo', 'temaSubtitulo'];
-                idsEditaveis.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.setAttribute('contenteditable', 'true');
-                        el.title = 'Clique duplo para editar ao vivo';
-                        el.addEventListener('blur', () => this.atualizarConfig());
-                        el.addEventListener('input', () => this.atualizarConfig());
-                    }
+            tornarTudoEditavel() {
+                document.querySelectorAll('.editavel').forEach(el => {
+                    el.contentEditable = true;
+                    el.addEventListener('blur', () => this.salvarEstado());
+                    el.addEventListener('input', () => this.salvarEstado());
+                });
+            },
+
+            modoEdicao() {
+                this.modoEdicaoAtual = !this.modoEdicaoAtual;
+                document.querySelectorAll('.editavel').forEach(el => {
+                    el.contentEditable = this.modoEdicaoAtual;
+                    el.style.cursor = this.modoEdicaoAtual ? 'text' : 'default';
+                });
+                const btn = document.querySelector('.toolbar-slide button');
+                if (btn) btn.classList.toggle('ativo', this.modoEdicaoAtual);
+            },
+
+            adicionarImagem() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        const slideAtivo = document.querySelector('.slide.active .slide-content');
+                        if (!slideAtivo) return;
+                        
+                        const container = document.createElement('div');
+                        container.className = 'imagem-container';
+                        container.draggable = true;
+                        container.style.left = '10px';
+                        container.style.top = '10px';
+                        
+                        const img = document.createElement('img');
+                        img.src = ev.target.result;
+                        img.className = 'imagem-slide';
+                        img.style.maxWidth = '200px';
+                        img.style.maxHeight = '200px';
+                        
+                        const controls = document.createElement('div');
+                        controls.className = 'imagem-controls';
+                        controls.innerHTML = `
+                            <button class="btn-resize" title="Aumentar">+</button>
+                            <button class="btn-resize" title="Diminuir">-</button>
+                            <button class="btn-delete" title="Remover">×</button>
+                        `;
+                        
+                        controls.querySelector('.btn-resize:first-child').onclick = (e) => {
+                            e.stopPropagation();
+                            const w = parseInt(img.style.maxWidth) || 200;
+                            img.style.maxWidth = (w + 40) + 'px';
+                            img.style.maxHeight = (w + 40) + 'px';
+                            this.salvarEstado();
+                        };
+                        controls.querySelector('.btn-resize:last-child').onclick = (e) => {
+                            e.stopPropagation();
+                            const w = parseInt(img.style.maxWidth) || 200;
+                            const novo = Math.max(60, w - 40);
+                            img.style.maxWidth = novo + 'px';
+                            img.style.maxHeight = novo + 'px';
+                            this.salvarEstado();
+                        };
+                        controls.querySelector('.btn-delete').onclick = (e) => {
+                            e.stopPropagation();
+                            container.remove();
+                            this.salvarEstado();
+                        };
+                        
+                        container.appendChild(img);
+                        container.appendChild(controls);
+                        
+                        // Drag
+                        let offsetX, offsetY, dragging = false;
+                        container.addEventListener('mousedown', (e) => {
+                            if (e.target.tagName === 'BUTTON') return;
+                            dragging = true;
+                            container.classList.add('dragging');
+                            offsetX = e.clientX - container.offsetLeft;
+                            offsetY = e.clientY - container.offsetTop;
+                        });
+                        document.addEventListener('mousemove', (e) => {
+                            if (!dragging) return;
+                            container.style.position = 'relative';
+                            container.style.left = (e.clientX - offsetX) + 'px';
+                            container.style.top = (e.clientY - offsetY) + 'px';
+                        });
+                        document.addEventListener('mouseup', () => {
+                            if (dragging) {
+                                dragging = false;
+                                container.classList.remove('dragging');
+                                this.salvarEstado();
+                            }
+                        });
+                        
+                        slideAtivo.appendChild(container);
+                        this.salvarEstado();
+                    };
+                    reader.readAsDataURL(file);
+                };
+                input.click();
+            },
+
+            adicionarCaixaTexto() {
+                const slideAtivo = document.querySelector('.slide.active .slide-content');
+                if (!slideAtivo) return;
+                
+                const div = document.createElement('div');
+                div.className = 'editavel';
+                div.contentEditable = true;
+                div.setAttribute('data-placeholder', 'Novo texto...');
+                div.style.cssText = 'margin: 10px 0; font-size: 20px; color: #2d3748; min-height: 30px;';
+                div.addEventListener('blur', () => this.salvarEstado());
+                
+                slideAtivo.appendChild(div);
+                div.focus();
+                this.salvarEstado();
+            },
+
+            negrito() { document.execCommand('bold'); this.salvarEstado(); },
+            italico() { document.execCommand('italic'); this.salvarEstado(); },
+            aumentarFonte() {
+                const sel = window.getSelection();
+                if (sel.rangeCount && sel.getRangeAt(0).commonAncestorContainer.parentElement) {
+                    const el = sel.getRangeAt(0).commonAncestorContainer.parentElement;
+                    const atual = parseInt(window.getComputedStyle(el).fontSize);
+                    el.style.fontSize = (atual + 4) + 'px';
+                    this.salvarEstado();
+                }
+            },
+            diminuirFonte() {
+                const sel = window.getSelection();
+                if (sel.rangeCount && sel.getRangeAt(0).commonAncestorContainer.parentElement) {
+                    const el = sel.getRangeAt(0).commonAncestorContainer.parentElement;
+                    const atual = parseInt(window.getComputedStyle(el).fontSize);
+                    el.style.fontSize = Math.max(10, atual - 4) + 'px';
+                    this.salvarEstado();
+                }
+            },
+            alinharEsquerda() { document.execCommand('justifyLeft'); },
+            alinharCentro() { document.execCommand('justifyCenter'); },
+            alinharDireita() { document.execCommand('justifyRight'); },
+
+            salvarEstado() {
+                const slides = [];
+                document.querySelectorAll('.slide-content').forEach(content => {
+                    slides.push(content.innerHTML);
+                });
+                localStorage.setItem('apresentacao_slides', JSON.stringify(slides));
+                
+                const imagens = [];
+                document.querySelectorAll('.imagem-slide').forEach(img => {
+                    imagens.push({
+                        src: img.src,
+                        width: img.style.maxWidth,
+                        height: img.style.maxHeight,
+                        left: img.parentElement.style.left,
+                        top: img.parentElement.style.top,
+                        slideId: img.closest('.slide').id
+                    });
+                });
+                localStorage.setItem('apresentacao_imagens', JSON.stringify(imagens));
+                
+                this.salvarConfig();
+            },
+
+            carregarImagensSalvas() {
+                const imagens = JSON.parse(localStorage.getItem('apresentacao_imagens') || '[]');
+                imagens.forEach(imgData => {
+                    const slide = document.getElementById(imgData.slideId);
+                    if (!slide) return;
+                    const content = slide.querySelector('.slide-content');
+                    if (!content) return;
+                    
+                    const container = document.createElement('div');
+                    container.className = 'imagem-container';
+                    container.style.left = imgData.left || '10px';
+                    container.style.top = imgData.top || '10px';
+                    
+                    const img = document.createElement('img');
+                    img.src = imgData.src;
+                    img.className = 'imagem-slide';
+                    img.style.maxWidth = imgData.width || '200px';
+                    img.style.maxHeight = imgData.height || '200px';
+                    
+                    container.appendChild(img);
+                    content.appendChild(container);
                 });
             },
 
             carregarConfigSalva() {
                 const saved = JSON.parse(localStorage.getItem('apresentacao_config') || '{}');
-                if (saved.tempo) {
-                    this.tempoQuizSegundos = saved.tempo;
-                    document.getElementById('configTempo').value = saved.tempo / 60;
-                }
-                if (saved.fonteTitulo) {
-                    document.getElementById('configFonteTitulo').value = saved.fonteTitulo;
-                    document.documentElement.style.setProperty('--tamanho-fonte-titulo', saved.fonteTitulo + 'px');
-                    document.getElementById('valorFonteTitulo').textContent = saved.fonteTitulo + 'px';
-                }
-                if (saved.fonteTexto) {
-                    document.getElementById('configFonteTexto').value = saved.fonteTexto;
-                    document.documentElement.style.setProperty('--tamanho-fonte-texto', saved.fonteTexto + 'px');
-                    document.getElementById('valorFonteTexto').textContent = saved.fonteTexto + 'px';
-                }
-                if (saved.fonteEmoji) {
-                    document.getElementById('configFonteEmoji').value = saved.fonteEmoji;
-                    document.documentElement.style.setProperty('--tamanho-fonte-emoji', saved.fonteEmoji + 'px');
-                    document.getElementById('valorFonteEmoji').textContent = saved.fonteEmoji + 'px';
-                }
-                if (saved.nomeModo1) document.getElementById('configNomeModo1').value = saved.nomeModo1;
-                if (saved.nomeModo2) document.getElementById('configNomeModo2').value = saved.nomeModo2;
-                this.atualizarLabels();
+                if (saved.tempo) { this.tempoQuizSegundos = saved.tempo; document.getElementById('configTempo').value = saved.tempo / 60; }
+                if (saved.fonteTitulo) { document.getElementById('configFonteTitulo').value = saved.fonteTitulo; document.documentElement.style.setProperty('--tamanho-fonte-titulo', saved.fonteTitulo + 'px'); document.getElementById('valorFonteTitulo').textContent = saved.fonteTitulo + 'px'; }
+                if (saved.fonteTexto) { document.getElementById('configFonteTexto').value = saved.fonteTexto; document.documentElement.style.setProperty('--tamanho-fonte-texto', saved.fonteTexto + 'px'); document.getElementById('valorFonteTexto').textContent = saved.fonteTexto + 'px'; }
+                if (saved.fonteEmoji) { document.getElementById('configFonteEmoji').value = saved.fonteEmoji; document.documentElement.style.setProperty('--tamanho-fonte-emoji', saved.fonteEmoji + 'px'); document.getElementById('valorFonteEmoji').textContent = saved.fonteEmoji + 'px'; }
+                if (saved.bgCor) { document.getElementById('configBgCor').value = saved.bgCor; document.body.style.background = saved.bgCor; }
+                if (saved.urlSite) { document.getElementById('configUrlSite').value = saved.urlSite; document.querySelector('[data-id="linkSite"]').textContent = '🔗 ' + saved.urlSite; }
                 document.getElementById('tempoMostrado').textContent = (this.tempoQuizSegundos / 60) + ' minutos';
             },
 
@@ -702,8 +936,8 @@
                     fonteTitulo: document.getElementById('configFonteTitulo').value,
                     fonteTexto: document.getElementById('configFonteTexto').value,
                     fonteEmoji: document.getElementById('configFonteEmoji').value,
-                    nomeModo1: document.getElementById('configNomeModo1').value,
-                    nomeModo2: document.getElementById('configNomeModo2').value
+                    bgCor: document.getElementById('configBgCor').value,
+                    urlSite: document.getElementById('configUrlSite').value
                 };
                 localStorage.setItem('apresentacao_config', JSON.stringify(config));
             },
@@ -714,73 +948,66 @@
                 this.tempoRestante = this.tempoQuizSegundos;
                 document.getElementById('tempoMostrado').textContent = tempoMin + ' minutos';
 
-                const fonteTitulo = document.getElementById('configFonteTitulo').value;
-                document.documentElement.style.setProperty('--tamanho-fonte-titulo', fonteTitulo + 'px');
-                document.getElementById('valorFonteTitulo').textContent = fonteTitulo + 'px';
+                const ft = document.getElementById('configFonteTitulo').value;
+                document.documentElement.style.setProperty('--tamanho-fonte-titulo', ft + 'px');
+                document.getElementById('valorFonteTitulo').textContent = ft + 'px';
 
-                const fonteTexto = document.getElementById('configFonteTexto').value;
-                document.documentElement.style.setProperty('--tamanho-fonte-texto', fonteTexto + 'px');
-                document.getElementById('valorFonteTexto').textContent = fonteTexto + 'px';
+                const ftx = document.getElementById('configFonteTexto').value;
+                document.documentElement.style.setProperty('--tamanho-fonte-texto', ftx + 'px');
+                document.getElementById('valorFonteTexto').textContent = ftx + 'px';
 
-                const fonteEmoji = document.getElementById('configFonteEmoji').value;
-                document.documentElement.style.setProperty('--tamanho-fonte-emoji', fonteEmoji + 'px');
-                document.getElementById('valorFonteEmoji').textContent = fonteEmoji + 'px';
+                const fe = document.getElementById('configFonteEmoji').value;
+                document.documentElement.style.setProperty('--tamanho-fonte-emoji', fe + 'px');
+                document.getElementById('valorFonteEmoji').textContent = fe + 'px';
 
-                this.atualizarLabels();
+                const bg = document.getElementById('configBgCor').value;
+                document.body.style.background = bg;
+
+                const url = document.getElementById('configUrlSite').value;
+                const linkEl = document.querySelector('[data-id="linkSite"]');
+                if (linkEl) linkEl.textContent = '🔗 ' + url;
+
                 this.atualizarConteudos();
                 this.salvarConfig();
             },
 
-            atualizarLabels() {
-                const nome1 = document.getElementById('configNomeModo1').value || 'Alimentação + Exercícios';
-                const nome2 = document.getElementById('configNomeModo2').value || 'Sono + Postura';
-                document.getElementById('labelModo1').textContent = nome1;
-                document.getElementById('labelModo2').textContent = nome2;
-                this.salvarConfig();
-            },
-
             atualizarConteudos() {
-                const titulo1 = document.getElementById('configConteudo1Titulo').value;
-                const texto1 = document.getElementById('configConteudo1Texto').value;
-                const titulo2 = document.getElementById('configConteudo2Titulo').value;
-                const texto2 = document.getElementById('configConteudo2Texto').value;
+                const t1 = document.getElementById('configConteudo1Titulo').value;
+                const tx1 = document.getElementById('configConteudo1Texto').value;
+                const t2 = document.getElementById('configConteudo2Titulo').value;
+                const tx2 = document.getElementById('configConteudo2Texto').value;
 
-                if (this.modoSelecionado) {
-                    const dados = this.dadosModos[this.modoSelecionado];
-                    if (dados) {
-                        dados.conteudos[0].titulo = titulo1 || dados.conteudos[0].titulo;
-                        dados.conteudos[0].texto = texto1 || dados.conteudos[0].texto;
-                        dados.conteudos[1].titulo = titulo2 || dados.conteudos[1].titulo;
-                        dados.conteudos[1].texto = texto2 || dados.conteudos[1].texto;
-                    }
-                }
+                const el1t = document.querySelector('[data-id="conteudo1Titulo"]');
+                const el1tx = document.querySelector('[data-id="conteudo1Texto"]');
+                const el2t = document.querySelector('[data-id="conteudo2Titulo"]');
+                const el2tx = document.querySelector('[data-id="conteudo2Texto"]');
 
-                document.getElementById('conteudo1Titulo').textContent = titulo1;
-                document.getElementById('conteudo1Texto').textContent = texto1;
-                document.getElementById('conteudo2Titulo').textContent = titulo2;
-                document.getElementById('conteudo2Texto').textContent = texto2;
-                this.salvarConfig();
+                if (el1t && t1) el1t.textContent = t1;
+                if (el1tx && tx1) el1tx.textContent = tx1;
+                if (el2t && t2) el2t.textContent = t2;
+                if (el2tx && tx2) el2tx.textContent = tx2;
             },
 
-            duplicarQuizSlide() {
-                if (this.perguntasQuiz.length < 6) {
-                    const ultima = this.perguntasQuiz[this.perguntasQuiz.length - 1];
-                    if (ultima) {
-                        this.perguntasQuiz.push({
-                            pergunta: ultima.pergunta + ' (extra)',
-                            opcoes: [...ultima.opcoes],
-                            correta: ultima.correta
-                        });
-                        alert('✅ Questão extra adicionada! Total: ' + this.perguntasQuiz.length);
-                    }
-                } else {
-                    alert('⚠️ Máximo de 6 questões!');
-                }
+            exportarApresentacao() {
+                const dados = {
+                    config: JSON.parse(localStorage.getItem('apresentacao_config') || '{}'),
+                    slides: JSON.parse(localStorage.getItem('apresentacao_slides') || '[]'),
+                    imagens: JSON.parse(localStorage.getItem('apresentacao_imagens') || '[]'),
+                    exportado_em: new Date().toISOString()
+                };
+                const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'apresentacao_backup_' + new Date().toISOString().split('T')[0] + '.json';
+                a.click();
             },
 
             resetarTudo() {
-                if (confirm('Resetar TODAS as configurações para o padrão?')) {
+                if (confirm('Resetar TODAS as configurações e imagens?')) {
                     localStorage.removeItem('apresentacao_config');
+                    localStorage.removeItem('apresentacao_slides');
+                    localStorage.removeItem('apresentacao_imagens');
                     location.reload();
                 }
             },
@@ -791,6 +1018,7 @@
                 const slideEl = document.getElementById(this.slidesIds[index]);
                 if (slideEl) slideEl.classList.add('active');
                 this.slideAtual = index;
+                document.getElementById('numSlide').textContent = index + 1;
 
                 if (index === 4 && this.perguntasQuiz.length > 0) this.carregarQuizDemo();
                 if (index === 7) this.carregarRankingFinal();
@@ -801,31 +1029,26 @@
             },
 
             proximoSlide() {
-                if (this.slideAtual < this.totalSlides - 1) {
-                    this.irParaSlide(this.slideAtual + 1);
-                }
+                if (this.slideAtual < this.totalSlides - 1) this.irParaSlide(this.slideAtual + 1);
             },
 
             async escolherModo(modo) {
-                console.log('🎯 Modo:', modo);
                 this.modoSelecionado = modo;
                 const dados = this.dadosModos[modo];
 
-                document.getElementById('temaEmoji').textContent = dados.emoji;
-                document.getElementById('temaTitulo').textContent = dados.titulo;
-                document.getElementById('temaTitulo').className = 'titulo-slide ' + (dados.classeTitulo || '');
-                document.getElementById('temaSubtitulo').textContent = dados.subtitulo;
+                const emojiEl = document.querySelector('[data-id="temaEmoji"]');
+                const tituloEl = document.querySelector('[data-id="temaTitulo"]');
+                const subtituloEl = document.querySelector('[data-id="temaSubtitulo"]');
 
-                document.getElementById('conteudo1Titulo').textContent = dados.conteudos[0].titulo;
-                document.getElementById('conteudo1Texto').textContent = dados.conteudos[0].texto;
-                document.getElementById('conteudo2Titulo').textContent = dados.conteudos[1].titulo;
-                document.getElementById('conteudo2Texto').textContent = dados.conteudos[1].texto;
+                if (emojiEl) emojiEl.textContent = dados.emoji;
+                if (tituloEl) { tituloEl.textContent = dados.titulo; tituloEl.className = 'titulo-slide editavel ' + (dados.classeTitulo || ''); }
+                if (subtituloEl) subtituloEl.textContent = dados.subtitulo;
 
-                // Atualizar painel de config
                 document.getElementById('configConteudo1Titulo').value = dados.conteudos[0].titulo;
                 document.getElementById('configConteudo1Texto').value = dados.conteudos[0].texto;
                 document.getElementById('configConteudo2Titulo').value = dados.conteudos[1].titulo;
                 document.getElementById('configConteudo2Texto').value = dados.conteudos[1].texto;
+                this.atualizarConteudos();
 
                 this.perguntasQuiz = await this.carregarQuizzesSupabase(dados.temasSupabase);
                 if (this.perguntasQuiz.length === 0) this.perguntasQuiz = dados.quizzesLocal;
@@ -845,7 +1068,7 @@
                             correta: q.correta
                         }));
                     }
-                } catch (e) { console.log('Offline - usando local'); }
+                } catch (e) { console.log('Offline'); }
                 return [];
             },
 
@@ -853,15 +1076,15 @@
                 const quizPergunta = document.getElementById('quizPergunta');
                 const quizOpcoes = document.getElementById('quizOpcoes');
                 const quizFeedback = document.getElementById('quizFeedback');
-                const btnProximoQuiz = document.getElementById('btnProximoQuiz');
-                const btnFinalizarQuiz = document.getElementById('btnFinalizarQuiz');
+                const btnProximo = document.getElementById('btnProximoQuiz');
+                const btnFinalizar = document.getElementById('btnFinalizarQuiz');
 
                 if (this.quizDemoIndice >= this.perguntasQuiz.length) {
                     quizPergunta.textContent = '🎉 Demonstração concluída!';
                     quizOpcoes.innerHTML = '';
                     quizFeedback.textContent = '';
-                    btnProximoQuiz.style.display = 'none';
-                    btnFinalizarQuiz.style.display = 'inline-block';
+                    btnProximo.style.display = 'none';
+                    btnFinalizar.style.display = 'inline-block';
                     return;
                 }
 
@@ -869,8 +1092,8 @@
                 quizPergunta.textContent = '❓ ' + p.pergunta;
                 quizFeedback.textContent = '';
                 quizFeedback.className = 'feedback-quiz';
-                btnProximoQuiz.style.display = 'none';
-                btnFinalizarQuiz.style.display = 'none';
+                btnProximo.style.display = 'none';
+                btnFinalizar.style.display = 'none';
 
                 let html = '';
                 p.opcoes.forEach((opcao, i) => {
@@ -888,47 +1111,28 @@
 
             responderQuiz(escolha) {
                 const p = this.perguntasQuiz[this.quizDemoIndice];
-                const feedback = document.getElementById('quizFeedback');
-                const btnProximoQuiz = document.getElementById('btnProximoQuiz');
-
                 document.querySelectorAll('.quiz-option').forEach((btn, i) => {
                     btn.disabled = true;
                     btn.style.pointerEvents = 'none';
                     if (i === p.correta) btn.classList.add('correct');
                     if (i === escolha && escolha !== p.correta) btn.classList.add('wrong');
                 });
-
-                if (escolha === p.correta) {
-                    feedback.textContent = '✅ CORRETO! +10 pontos! ⭐';
-                    feedback.className = 'feedback-quiz acerto';
-                } else {
-                    feedback.textContent = '❌ A resposta era: ' + p.opcoes[p.correta];
-                    feedback.className = 'feedback-quiz erro';
-                }
-                btnProximoQuiz.style.display = 'inline-block';
+                const fb = document.getElementById('quizFeedback');
+                fb.textContent = escolha === p.correta ? '✅ CORRETO! +10 pontos! ⭐' : '❌ A resposta era: ' + p.opcoes[p.correta];
+                fb.className = 'feedback-quiz ' + (escolha === p.correta ? 'acerto' : 'erro');
+                document.getElementById('btnProximoQuiz').style.display = 'inline-block';
             },
 
-            proximoQuizDemo() {
-                this.quizDemoIndice++;
-                this.carregarQuizDemo();
-            },
+            proximoQuizDemo() { this.quizDemoIndice++; this.carregarQuizDemo(); },
 
             iniciarContagem() {
-                const btn = document.getElementById('btnIniciarContagem');
-                btn.style.display = 'none';
-                let contador = 3;
+                document.getElementById('btnIniciarContagem').style.display = 'none';
+                let c = 3;
                 const el = document.getElementById('contador');
-
                 const intervalo = setInterval(() => {
-                    contador--;
-                    if (contador <= 0) {
-                        clearInterval(intervalo);
-                        el.textContent = 'GO! 🚀';
-                        el.className = 'contador go';
-                        this.iniciarTimerQuiz();
-                    } else {
-                        el.textContent = contador;
-                    }
+                    c--;
+                    if (c <= 0) { clearInterval(intervalo); el.textContent = 'GO! 🚀'; el.className = 'contador go'; this.iniciarTimerQuiz(); }
+                    else { el.textContent = c; }
                 }, 1000);
             },
 
@@ -936,121 +1140,75 @@
                 this.tempoRestante = this.tempoQuizSegundos;
                 const timerEl = document.getElementById('timerQuiz');
                 const btnRanking = document.getElementById('btnMostrarRanking');
-                const contadorEl = document.getElementById('contador');
-
                 timerEl.style.display = 'block';
                 this.atualizarTimerDisplay();
-
                 this.timerInterval = setInterval(() => {
                     this.tempoRestante--;
                     this.atualizarTimerDisplay();
-
-                    if (this.tempoRestante <= 30) {
-                        timerEl.classList.add('urgente');
-                    }
+                    if (this.tempoRestante <= 30) timerEl.classList.add('urgente');
                     if (this.tempoRestante <= 0) {
                         clearInterval(this.timerInterval);
                         timerEl.textContent = '⏰ Tempo esgotado!';
-                        contadorEl.textContent = 'FIM!';
-                        contadorEl.className = 'contador go';
+                        document.getElementById('contador').textContent = 'FIM!';
                         btnRanking.style.display = 'inline-block';
                         this.dispararConfetes();
                     }
                 }, 1000);
-
-                // Botão para encerrar antes
                 btnRanking.style.display = 'inline-block';
             },
 
             atualizarTimerDisplay() {
                 const min = Math.floor(this.tempoRestante / 60);
                 const seg = this.tempoRestante % 60;
-                document.getElementById('timerQuiz').textContent = `⏱️ ${String(min).padStart(2, '0')}:${String(seg).padStart(2, '0')}`;
+                document.getElementById('timerQuiz').textContent = `⏱️ ${String(min).padStart(2,'0')}:${String(seg).padStart(2,'0')}`;
             },
 
             async carregarRankingFinal() {
-                const container = document.getElementById('rankingFinal');
+                const c = document.getElementById('rankingFinal');
                 try {
-                    const response = await fetch(
-                        'https://ejldlvlacidyzizxucdr.supabase.co/rest/v1/usuarios?select=apelido,pontos&order=pontos.desc&limit=5',
-                        { headers: { 'apikey': 'sb_publishable_YDWCWLgn0t9wrayWljnnaA_immbdkj8' } }
-                    );
-                    const data = await response.json();
-                    if (data && data.length > 0) {
-                        let html = '';
-                        data.forEach((j, idx) => {
-                            const medalha = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `${idx+1}º`;
-                            html += `<div class="ranking-item" style="animation-delay:${idx*0.2}s">${medalha} <strong>${j.apelido}</strong> — ⭐ ${j.pontos} pts</div>`;
-                        });
-                        container.innerHTML = html;
-                    } else {
-                        container.innerHTML = '<p>🥇 1º: ______<br>🥈 2º: ______<br>🥉 3º: ______</p>';
-                    }
-                } catch (e) {
-                    container.innerHTML = '<p>🥇 1º: ______<br>🥈 2º: ______<br>🥉 3º: ______</p>';
-                }
+                    const r = await fetch('https://ejldlvlacidyzizxucdr.supabase.co/rest/v1/usuarios?select=apelido,pontos&order=pontos.desc&limit=5', { headers: { 'apikey': 'sb_publishable_YDWCWLgn0t9wrayWljnnaA_immbdkj8' } });
+                    const d = await r.json();
+                    c.innerHTML = d?.length ? d.map((j,i) => `<div class="ranking-item" style="animation-delay:${i*0.2}s">${['🥇','🥈','🥉'][i]||`${i+1}º`} <strong>${j.apelido}</strong> — ⭐ ${j.pontos} pts</div>`).join('') : '<p>🥇 1º: ______<br>🥈 2º: ______<br>🥉 3º: ______</p>';
+                } catch(e) { c.innerHTML = '<p>🥇 1º: ______<br>🥈 2º: ______<br>🥉 3º: ______</p>'; }
             },
 
             dispararConfetes() {
-                const emojis = ['🎉','🎊','⭐','🏆','🌟','💫','✨','🎯','💪','👏','🥇','🎖️'];
+                const emojis = ['🎉','🎊','⭐','🏆','🌟','💫','✨','🎯','💪','👏'];
                 for (let i = 0; i < 40; i++) {
                     setTimeout(() => {
                         const c = document.createElement('div');
                         c.className = 'confetti';
-                        c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                        c.style.left = Math.random() * 100 + '%';
-                        c.style.fontSize = (Math.random() * 30 + 20) + 'px';
-                        c.style.animation = `confeteFall ${Math.random() * 2 + 2}s ease-out forwards`;
+                        c.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+                        c.style.left = Math.random()*100+'%';
+                        c.style.fontSize = (Math.random()*30+20)+'px';
+                        c.style.animation = `confeteFall ${Math.random()*2+2}s ease-out forwards`;
                         document.body.appendChild(c);
                         setTimeout(() => c.remove(), 4000);
-                    }, i * 80);
+                    }, i*80);
                 }
             },
 
             toggleFullscreen() {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(() => {
-                        alert('Pressione F11 para tela cheia!');
-                    });
-                } else {
-                    document.exitFullscreen();
-                }
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => alert('Pressione F11'));
+                else document.exitFullscreen();
             }
         };
 
-        // ========== PAINEL DE CONFIGURAÇÃO ==========
         function toggleConfig() {
             const panel = document.getElementById('configPanel');
             const overlay = document.getElementById('overlay');
-            const isOpen = panel.classList.contains('open');
-
-            if (isOpen) {
-                panel.classList.remove('open');
-                overlay.classList.remove('show');
-            } else {
-                panel.classList.add('open');
-                overlay.classList.add('show');
-            }
+            panel.classList.toggle('open');
+            overlay.classList.toggle('show');
         }
 
-        // ========== TECLADO ==========
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                if (document.activeElement && document.activeElement.isContentEditable) return;
-                e.preventDefault();
-                App.proximoSlide();
-            } else if (e.key === 'ArrowLeft') {
-                if (document.activeElement && document.activeElement.isContentEditable) return;
-                e.preventDefault();
-                if (App.slideAtual > 0) App.irParaSlide(App.slideAtual - 1);
-            } else if (e.key === 'f' || e.key === 'F') {
-                App.toggleFullscreen();
-            } else if (e.key === 'Escape') {
-                toggleConfig();
-            }
+            if (document.activeElement?.isContentEditable) return;
+            if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); App.proximoSlide(); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); if (App.slideAtual > 0) App.irParaSlide(App.slideAtual - 1); }
+            if (e.key === 'f' || e.key === 'F') App.toggleFullscreen();
+            if (e.key === 'Escape') toggleConfig();
         });
 
-        // ========== INICIAR ==========
         window.addEventListener('DOMContentLoaded', () => App.init());
     </script>
 </body>
