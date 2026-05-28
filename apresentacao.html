@@ -275,20 +275,29 @@
             box-shadow: 0 0 0 8px rgba(102,126,234,0.1);
         }
 
-        /* IMAGENS */
+        /* IMAGENS - CORRIGIDO DRAG */
         .imagem-container {
             display: inline-block;
             position: relative;
             margin: 10px;
             cursor: move;
             user-select: none;
+            z-index: 10;
+            transition: none;
+        }
+        .imagem-container.dragging {
+            z-index: 999;
+            opacity: 0.8;
+            pointer-events: auto;
         }
         .imagem-slide {
             max-width: 200px;
             max-height: 200px;
             object-fit: contain;
             border-radius: 15px;
-            transition: all 0.2s;
+            transition: none;
+            display: block;
+            pointer-events: none;
         }
         .imagem-slide:hover {
             outline: 3px dashed #667eea;
@@ -296,10 +305,11 @@
         }
         .imagem-controls {
             position: absolute;
-            top: -20px; right: -20px;
+            top: -25px; right: -25px;
             display: flex; gap: 5px;
             opacity: 0; transition: opacity 0.2s;
             z-index: 200;
+            pointer-events: auto;
         }
         .imagem-container:hover .imagem-controls {
             opacity: 1;
@@ -311,6 +321,7 @@
             color: white; transition: 0.2s;
             display: flex; align-items: center; justify-content: center;
             font-weight: bold;
+            pointer-events: auto;
         }
         .btn-img-aumentar { background: #667eea; }
         .btn-img-diminuir { background: #667eea; }
@@ -375,6 +386,12 @@
             padding: 8px 20px; display: flex; gap: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 9998; align-items: center;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+        .toolbar-slide.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(-20px);
         }
         .toolbar-slide button {
             background: none; border: none;
@@ -395,15 +412,61 @@
             position: fixed; z-index: 9998;
             width: 50px; height: 50px; border-radius: 50%;
             border: none; cursor: pointer; font-size: 22px;
-            color: white; transition: 0.3s;
+            color: white; transition: all 0.3s;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             display: flex; align-items: center; justify-content: center;
         }
         .btn-flutuante:hover { transform: scale(1.1); }
+        .btn-flutuante.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.5);
+        }
         .btn-fullscreen { bottom: 20px; right: 80px; background: #667eea; }
         .btn-config { bottom: 20px; right: 20px; background: #f59e0b; }
         .btn-voltar { bottom: 20px; left: 20px; background: #a0aec0; font-size: 14px; width: auto; padding: 0 18px; border-radius: 25px; }
         .btn-add-imagem { bottom: 20px; left: 140px; background: #48bb78; font-size: 18px; }
+        .btn-add-slide { bottom: 20px; left: 200px; background: #8b5cf6; font-size: 18px; }
+
+        /* MODO APRESENTAÇÃO */
+        .modo-apresentacao .editavel {
+            cursor: default;
+            pointer-events: none;
+            outline: none !important;
+            background: transparent !important;
+        }
+        .modo-apresentacao .editavel:hover {
+            outline: none !important;
+            background: transparent !important;
+        }
+        .modo-apresentacao .imagem-controls {
+            display: none !important;
+        }
+        .modo-apresentacao .imagem-container {
+            cursor: default;
+        }
+        .modo-apresentacao .imagem-slide:hover {
+            outline: none !important;
+        }
+        .modo-apresentacao .toolbar-slide {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .modo-apresentacao .btn-flutuante {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* INDICADOR DE MODO */
+        .modo-indicador {
+            position: fixed; top: 15px; right: 20px;
+            z-index: 9999; font-size: 13px; font-weight: 700;
+            padding: 8px 16px; border-radius: 20px;
+            cursor: pointer; transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+        .modo-edicao-ind { background: #fef3c7; color: #d97706; }
+        .modo-apresentacao-ind { background: #48bb78; color: white; }
 
         .overlay {
             position: fixed; top: 0; left: 0;
@@ -412,6 +475,31 @@
             display: none;
         }
         .overlay.show { display: block; }
+
+        /* NAVEGAÇÃO INFERIOR (MODO APRESENTAÇÃO) */
+        .nav-apresentacao {
+            position: fixed; bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            display: none; gap: 15px; z-index: 9999;
+        }
+        .modo-apresentacao .nav-apresentacao {
+            display: flex;
+        }
+        .nav-apresentacao button {
+            width: 50px; height: 50px;
+            border-radius: 50%; border: 2px solid white;
+            background: rgba(255,255,255,0.2);
+            color: white; font-size: 20px; cursor: pointer;
+            transition: 0.3s; backdrop-filter: blur(10px);
+        }
+        .nav-apresentacao button:hover {
+            background: rgba(255,255,255,0.4);
+        }
+        .nav-apresentacao .slide-counter {
+            color: white; font-size: 14px;
+            display: flex; align-items: center;
+            font-weight: 600;
+        }
 
         @media (max-width: 768px) {
             .slide-content { padding: 25px 20px; border-radius: 25px; max-width: 95vw; }
@@ -425,11 +513,18 @@
             .config-panel { width: 100%; right: -100%; }
             .toolbar-slide { padding: 6px 12px; gap: 4px; overflow-x: auto; }
             .toolbar-slide button { font-size: 12px; padding: 6px 8px; }
+            .btn-flutuante { width: 40px; height: 40px; font-size: 16px; }
+            .btn-flutuante.btn-voltar { width: auto; padding: 0 12px; }
         }
     </style>
 </head>
 <body>
     <div class="stars" id="starsContainer"></div>
+
+    <!-- INDICADOR DE MODO -->
+    <div class="modo-indicador modo-edicao-ind" id="modoIndicador" onclick="App.toggleModo()" title="Clique para alternar entre Edição e Apresentação">
+        ✏️ Modo Edição
+    </div>
 
     <!-- TOOLBAR -->
     <div class="toolbar-slide" id="toolbar">
@@ -443,10 +538,12 @@
         <button onclick="App.alinharCentro()" title="Alinhar centro"><i class="fas fa-align-center"></i></button>
         <button onclick="App.alinharDireita()" title="Alinhar direita"><i class="fas fa-align-right"></i></button>
         <span class="separator"></span>
-        <button onclick="App.adicionarImagem()" title="Adicionar imagem"><i class="fas fa-image"></i> Imagem</button>
-        <button onclick="App.adicionarCaixaTexto()" title="Adicionar texto"><i class="fas fa-font"></i> Texto</button>
+        <button onclick="App.adicionarImagem()" title="Adicionar imagem"><i class="fas fa-image"></i> Img</button>
+        <button onclick="App.adicionarCaixaTexto()" title="Adicionar texto"><i class="fas fa-font"></i> Txt</button>
+        <button onclick="App.adicionarNovoSlide()" title="Novo slide"><i class="fas fa-plus"></i> Slide</button>
+        <button onclick="App.deletarSlideAtual()" title="Deletar slide" style="color: #ef4444;"><i class="fas fa-trash"></i></button>
         <span class="separator"></span>
-        <span style="font-size: 11px; color: #a0aec0;">Slide <strong id="numSlide">1</strong>/8</span>
+        <span style="font-size: 11px; color: #a0aec0;">Slide <strong id="numSlide">1</strong>/<strong id="totalSlides">8</strong></span>
     </div>
 
     <!-- SLIDES -->
@@ -559,6 +656,14 @@
 
     </div>
 
+    <!-- NAVEGAÇÃO MODO APRESENTAÇÃO -->
+    <div class="nav-apresentacao">
+        <button onclick="App.slideAnterior()" title="Anterior">◀</button>
+        <span class="slide-counter"><span id="navSlideAtual">1</span>/<span id="navSlideTotal">8</span></span>
+        <button onclick="App.proximoSlide()" title="Próximo">▶</button>
+        <button onclick="App.toggleModo()" title="Sair da apresentação">✏️</button>
+    </div>
+
     <!-- PAINEL CONFIG -->
     <div class="overlay" id="overlay" onclick="toggleConfig()"></div>
     <div class="config-panel" id="configPanel">
@@ -591,10 +696,11 @@
     </div>
 
     <!-- BOTÕES FLUTUANTES -->
-    <button class="btn-flutuante btn-fullscreen" title="Tela Cheia (F)" onclick="App.toggleFullscreen()"><i class="fas fa-expand"></i></button>
+    <button class="btn-flutuante btn-fullscreen" title="Tela Cheia" onclick="App.toggleFullscreen()"><i class="fas fa-expand"></i></button>
     <button class="btn-flutuante btn-config" title="Configurações" onclick="toggleConfig()"><i class="fas fa-cog"></i></button>
     <button class="btn-flutuante btn-add-imagem" title="Adicionar Imagem" onclick="App.adicionarImagem()"><i class="fas fa-image"></i></button>
-    <button class="btn-flutuante btn-voltar" onclick="App.irParaSlide(0)" title="Início"><i class="fas fa-home"></i> Início</button>
+    <button class="btn-flutuante btn-add-slide" title="Novo Slide" onclick="App.adicionarNovoSlide()"><i class="fas fa-plus"></i></button>
+    <button class="btn-flutuante btn-voltar" onclick="App.irParaSlide(0)" title="Início"><i class="fas fa-home"></i></button>
 
     <script>
         const App = {
@@ -606,6 +712,8 @@
             tempoQuizSegundos: 180,
             timerInterval: null,
             tempoRestante: 180,
+            modoApresentacao: false,
+            slideCounter: 8,
 
             slidesIds: [
                 'slide-escolha', 'slide-titulo', 'slide-conteudo1', 'slide-conteudo2',
@@ -647,8 +755,9 @@
                 this.carregarConfigSalva();
                 this.carregarImagensSalvas();
                 this.tornarTudoEditavel();
+                this.atualizarContadores();
                 this.irParaSlide(0);
-                console.log('✅ Pronto! Clique nos textos para editar.');
+                console.log('✅ Pronto! Use o botão ✏️ no canto superior direito para alternar modos.');
             },
 
             criarEstrelas() {
@@ -667,17 +776,57 @@
             },
 
             configurarBotoes() {
-                document.getElementById('btnModo1').onclick = () => this.escolherModo('alimentacao_exercicios');
-                document.getElementById('btnModo2').onclick = () => this.escolherModo('sono_postura');
-                document.getElementById('btnSlide1').onclick = () => this.proximoSlide();
-                document.getElementById('btnSlide2').onclick = () => this.proximoSlide();
-                document.getElementById('btnSlide3').onclick = () => this.proximoSlide();
-                document.getElementById('btnSlide5').onclick = () => this.proximoSlide();
-                document.getElementById('btnFinalizarQuiz').onclick = () => this.proximoSlide();
-                document.getElementById('btnProximoQuiz').onclick = () => this.proximoQuizDemo();
-                document.getElementById('btnIniciarContagem').onclick = () => this.iniciarContagem();
-                document.getElementById('btnConfetes').onclick = () => this.dispararConfetes();
-                document.getElementById('btnMostrarRanking').onclick = () => this.proximoSlide();
+                const botoes = {
+                    'btnModo1': () => this.escolherModo('alimentacao_exercicios'),
+                    'btnModo2': () => this.escolherModo('sono_postura'),
+                    'btnSlide1': () => this.proximoSlide(),
+                    'btnSlide2': () => this.proximoSlide(),
+                    'btnSlide3': () => this.proximoSlide(),
+                    'btnSlide5': () => this.proximoSlide(),
+                    'btnFinalizarQuiz': () => this.proximoSlide(),
+                    'btnProximoQuiz': () => this.proximoQuizDemo(),
+                    'btnIniciarContagem': () => this.iniciarContagem(),
+                    'btnConfetes': () => this.dispararConfetes(),
+                    'btnMostrarRanking': () => this.proximoSlide(),
+                };
+                Object.entries(botoes).forEach(([id, fn]) => {
+                    const el = document.getElementById(id);
+                    if (el) el.onclick = fn;
+                });
+            },
+
+            toggleModo() {
+                this.modoApresentacao = !this.modoApresentacao;
+                const body = document.body;
+                const indicador = document.getElementById('modoIndicador');
+                const toolbar = document.getElementById('toolbar');
+                const botoesFlutuantes = document.querySelectorAll('.btn-flutuante');
+
+                if (this.modoApresentacao) {
+                    body.classList.add('modo-apresentacao');
+                    indicador.textContent = '🎬 Modo Apresentação';
+                    indicador.className = 'modo-indicador modo-apresentacao-ind';
+                    toolbar.classList.add('hidden');
+                    botoesFlutuantes.forEach(b => b.classList.add('hidden'));
+                    document.querySelectorAll('.editavel').forEach(el => {
+                        el.contentEditable = 'false';
+                    });
+                    document.querySelectorAll('.imagem-container').forEach(el => {
+                        el.style.cursor = 'default';
+                    });
+                } else {
+                    body.classList.remove('modo-apresentacao');
+                    indicador.textContent = '✏️ Modo Edição';
+                    indicador.className = 'modo-indicador modo-edicao-ind';
+                    toolbar.classList.remove('hidden');
+                    botoesFlutuantes.forEach(b => b.classList.remove('hidden'));
+                    document.querySelectorAll('.editavel').forEach(el => {
+                        el.contentEditable = 'true';
+                    });
+                    document.querySelectorAll('.imagem-container').forEach(el => {
+                        el.style.cursor = 'move';
+                    });
+                }
             },
 
             tornarTudoEditavel() {
@@ -686,6 +835,50 @@
                     el.addEventListener('blur', () => this.salvarEstado());
                     el.addEventListener('input', () => this.salvarEstado());
                 });
+            },
+
+            adicionarNovoSlide() {
+                this.slideCounter++;
+                const id = 'slide-custom-' + this.slideCounter;
+                const slide = document.createElement('div');
+                slide.className = 'slide';
+                slide.id = id;
+                slide.innerHTML = `
+                    <div class="slide-content">
+                        <div class="emoji-medio editavel" data-id="emoji-${id}">📝</div>
+                        <h1 class="titulo-slide editavel" data-id="titulo-${id}">Novo Slide</h1>
+                        <p class="subtitulo editavel" data-id="subtitulo-${id}">Clique para editar este texto</p>
+                        <p style="font-size: var(--tamanho-fonte-texto); color: #4a5568; line-height: 1.6;" class="editavel" data-id="texto-${id}">Adicione seu conteúdo aqui...</p>
+                    </div>
+                `;
+                document.getElementById('slideContainer').appendChild(slide);
+                this.slidesIds.push(id);
+                this.totalSlides = this.slidesIds.length;
+                this.tornarTudoEditavel();
+                this.irParaSlide(this.totalSlides - 1);
+                this.atualizarContadores();
+                this.salvarEstado();
+            },
+
+            deletarSlideAtual() {
+                if (this.totalSlides <= 1) {
+                    alert('Mínimo de 1 slide!');
+                    return;
+                }
+                if (!confirm('Deletar este slide permanentemente?')) return;
+                const id = this.slidesIds[this.slideAtual];
+                const el = document.getElementById(id);
+                if (el) el.remove();
+                this.slidesIds.splice(this.slideAtual, 1);
+                this.totalSlides = this.slidesIds.length;
+                if (this.slideAtual >= this.totalSlides) this.slideAtual = this.totalSlides - 1;
+                this.atualizarContadores();
+                this.irParaSlide(this.slideAtual);
+                this.salvarEstado();
+            },
+
+            slideAnterior() {
+                if (this.slideAtual > 0) this.irParaSlide(this.slideAtual - 1);
             },
 
             adicionarImagem() {
@@ -702,12 +895,17 @@
 
                         const container = document.createElement('div');
                         container.className = 'imagem-container';
+                        container.style.position = 'relative';
+                        container.style.left = '0px';
+                        container.style.top = '0px';
+                        container.style.display = 'inline-block';
 
                         const img = document.createElement('img');
                         img.src = ev.target.result;
                         img.className = 'imagem-slide';
                         img.style.maxWidth = '200px';
                         img.style.maxHeight = '200px';
+                        img.draggable = false;
 
                         const controls = document.createElement('div');
                         controls.className = 'imagem-controls';
@@ -717,7 +915,6 @@
                             <button class="btn-img-deletar" title="Remover">×</button>
                         `;
 
-                        // Eventos dos controles
                         controls.querySelector('.btn-img-aumentar').onclick = (ev2) => {
                             ev2.stopPropagation();
                             const w = parseInt(img.style.maxWidth) || 200;
@@ -743,31 +940,45 @@
                         container.appendChild(img);
                         container.appendChild(controls);
 
-                        // Drag simples
-                        let dragging = false, startX, startY, startLeft, startTop;
+                        // DRAG CORRIGIDO
+                        let dragging = false;
+                        let startMouseX, startMouseY;
+                        let startLeft, startTop;
+
                         container.addEventListener('mousedown', (e2) => {
                             if (e2.target.tagName === 'BUTTON') return;
-                            dragging = true;
-                            startX = e2.clientX;
-                            startY = e2.clientY;
-                            startLeft = container.offsetLeft || 0;
-                            startTop = container.offsetTop || 0;
-                            container.style.position = 'relative';
-                            container.style.zIndex = '999';
+                            if (this.modoApresentacao) return;
                             e2.preventDefault();
+                            dragging = true;
+                            container.classList.add('dragging');
+                            startMouseX = e2.clientX;
+                            startMouseY = e2.clientY;
+                            startLeft = parseFloat(container.style.left) || 0;
+                            startTop = parseFloat(container.style.top) || 0;
+                            container.style.zIndex = '999';
                         });
-                        document.addEventListener('mousemove', (e2) => {
+
+                        const onMouseMove = (e2) => {
                             if (!dragging) return;
-                            container.style.left = (startLeft + e2.clientX - startX) + 'px';
-                            container.style.top = (startTop + e2.clientY - startY) + 'px';
-                        });
-                        document.addEventListener('mouseup', () => {
+                            const dx = e2.clientX - startMouseX;
+                            const dy = e2.clientY - startMouseY;
+                            container.style.left = (startLeft + dx) + 'px';
+                            container.style.top = (startTop + dy) + 'px';
+                        };
+
+                        const onMouseUp = () => {
                             if (dragging) {
                                 dragging = false;
-                                container.style.zIndex = '';
+                                container.classList.remove('dragging');
+                                container.style.zIndex = '10';
                                 this.salvarEstado();
                             }
-                        });
+                            document.removeEventListener('mousemove', onMouseMove);
+                            document.removeEventListener('mouseup', onMouseUp);
+                        };
+
+                        document.addEventListener('mousemove', onMouseMove);
+                        document.addEventListener('mouseup', onMouseUp);
 
                         slideAtivo.appendChild(container);
                         this.salvarEstado();
@@ -789,6 +1000,13 @@
                 slideAtivo.appendChild(div);
                 div.focus();
                 this.salvarEstado();
+            },
+
+            atualizarContadores() {
+                document.getElementById('numSlide').textContent = this.slideAtual + 1;
+                document.getElementById('totalSlides').textContent = this.totalSlides;
+                document.getElementById('navSlideAtual').textContent = this.slideAtual + 1;
+                document.getElementById('navSlideTotal').textContent = this.totalSlides;
             },
 
             negrito() { document.execCommand('bold'); this.salvarEstado(); },
@@ -816,24 +1034,34 @@
             alinharDireita() { document.execCommand('justifyRight'); },
 
             salvarEstado() {
-                const slides = [];
-                document.querySelectorAll('.slide-content').forEach(content => {
-                    slides.push(content.innerHTML);
-                });
-                localStorage.setItem('apresentacao_slides', JSON.stringify(slides));
-                const imagens = [];
-                document.querySelectorAll('.imagem-slide').forEach(img => {
-                    const container = img.parentElement;
-                    imagens.push({
-                        src: img.src,
-                        width: img.style.maxWidth || '200px',
-                        height: img.style.maxHeight || '200px',
-                        left: container.style.left || '0px',
-                        top: container.style.top || '0px',
-                        slideId: container.closest('.slide')?.id || ''
+                try {
+                    const slidesData = [];
+                    document.querySelectorAll('.slide').forEach(slide => {
+                        const content = slide.querySelector('.slide-content');
+                        slidesData.push({
+                            id: slide.id,
+                            html: content ? content.innerHTML : ''
+                        });
                     });
-                });
-                localStorage.setItem('apresentacao_imagens', JSON.stringify(imagens));
+                    localStorage.setItem('apresentacao_slides_data', JSON.stringify(slidesData));
+                    localStorage.setItem('apresentacao_slides_ids', JSON.stringify(this.slidesIds));
+                    localStorage.setItem('apresentacao_slide_counter', this.slideCounter);
+
+                    const imagens = [];
+                    document.querySelectorAll('.imagem-slide').forEach(img => {
+                        const container = img.parentElement;
+                        const slide = container.closest('.slide');
+                        imagens.push({
+                            src: img.src,
+                            width: img.style.maxWidth || '200px',
+                            height: img.style.maxHeight || '200px',
+                            left: container.style.left || '0px',
+                            top: container.style.top || '0px',
+                            slideId: slide ? slide.id : ''
+                        });
+                    });
+                    localStorage.setItem('apresentacao_imagens', JSON.stringify(imagens));
+                } catch (e) {}
             },
 
             carregarImagensSalvas() {
@@ -850,12 +1078,14 @@
                         container.style.position = 'relative';
                         container.style.left = imgData.left;
                         container.style.top = imgData.top;
+                        container.style.display = 'inline-block';
 
                         const img = document.createElement('img');
                         img.src = imgData.src;
                         img.className = 'imagem-slide';
                         img.style.maxWidth = imgData.width;
                         img.style.maxHeight = imgData.height;
+                        img.draggable = false;
 
                         const controls = document.createElement('div');
                         controls.className = 'imagem-controls';
@@ -883,6 +1113,34 @@
                             container.remove();
                             this.salvarEstado();
                         };
+
+                        // DRAG para imagens carregadas
+                        let dragging = false, startMouseX, startMouseY, startLeft, startTop;
+                        container.addEventListener('mousedown', (e2) => {
+                            if (e2.target.tagName === 'BUTTON') return;
+                            if (this.modoApresentacao) return;
+                            e2.preventDefault();
+                            dragging = true;
+                            container.classList.add('dragging');
+                            startMouseX = e2.clientX;
+                            startMouseY = e2.clientY;
+                            startLeft = parseFloat(container.style.left) || 0;
+                            startTop = parseFloat(container.style.top) || 0;
+                            container.style.zIndex = '999';
+                        });
+                        document.addEventListener('mousemove', (e2) => {
+                            if (!dragging) return;
+                            container.style.left = (startLeft + e2.clientX - startMouseX) + 'px';
+                            container.style.top = (startTop + e2.clientY - startMouseY) + 'px';
+                        });
+                        document.addEventListener('mouseup', () => {
+                            if (dragging) {
+                                dragging = false;
+                                container.classList.remove('dragging');
+                                container.style.zIndex = '10';
+                                this.salvarEstado();
+                            }
+                        });
 
                         container.appendChild(img);
                         container.appendChild(controls);
@@ -921,25 +1179,16 @@
                 this.tempoQuizSegundos = tempoMin * 60;
                 this.tempoRestante = this.tempoQuizSegundos;
                 document.getElementById('tempoMostrado').textContent = tempoMin + ' minutos';
-
-                const ft = document.getElementById('configFonteTitulo').value;
-                document.documentElement.style.setProperty('--tamanho-fonte-titulo', ft + 'px');
-                document.getElementById('valorFonteTitulo').textContent = ft + 'px';
-
-                const ftx = document.getElementById('configFonteTexto').value;
-                document.documentElement.style.setProperty('--tamanho-fonte-texto', ftx + 'px');
-                document.getElementById('valorFonteTexto').textContent = ftx + 'px';
-
-                const fe = document.getElementById('configFonteEmoji').value;
-                document.documentElement.style.setProperty('--tamanho-fonte-emoji', fe + 'px');
-                document.getElementById('valorFonteEmoji').textContent = fe + 'px';
-
+                document.documentElement.style.setProperty('--tamanho-fonte-titulo', document.getElementById('configFonteTitulo').value + 'px');
+                document.getElementById('valorFonteTitulo').textContent = document.getElementById('configFonteTitulo').value + 'px';
+                document.documentElement.style.setProperty('--tamanho-fonte-texto', document.getElementById('configFonteTexto').value + 'px');
+                document.getElementById('valorFonteTexto').textContent = document.getElementById('configFonteTexto').value + 'px';
+                document.documentElement.style.setProperty('--tamanho-fonte-emoji', document.getElementById('configFonteEmoji').value + 'px');
+                document.getElementById('valorFonteEmoji').textContent = document.getElementById('configFonteEmoji').value + 'px';
                 document.body.style.background = document.getElementById('configBgCor').value;
-
                 const url = document.getElementById('configUrlSite').value;
                 const linkEl = document.querySelector('[data-id="linkSite"]');
                 if (linkEl) linkEl.textContent = '🔗 ' + url;
-
                 this.atualizarConteudos();
                 this.salvarConfig();
             },
@@ -962,7 +1211,8 @@
             exportarApresentacao() {
                 const dados = {
                     config: JSON.parse(localStorage.getItem('apresentacao_config') || '{}'),
-                    slides: JSON.parse(localStorage.getItem('apresentacao_slides') || '[]'),
+                    slidesIds: JSON.parse(localStorage.getItem('apresentacao_slides_ids') || '[]'),
+                    slidesData: JSON.parse(localStorage.getItem('apresentacao_slides_data') || '[]'),
                     imagens: JSON.parse(localStorage.getItem('apresentacao_imagens') || '[]'),
                     exportado_em: new Date().toISOString()
                 };
@@ -975,9 +1225,11 @@
             },
 
             resetarTudo() {
-                if (confirm('Resetar TODAS as configurações e imagens?')) {
+                if (confirm('Resetar TODAS as configurações, slides e imagens?')) {
                     localStorage.removeItem('apresentacao_config');
-                    localStorage.removeItem('apresentacao_slides');
+                    localStorage.removeItem('apresentacao_slides_data');
+                    localStorage.removeItem('apresentacao_slides_ids');
+                    localStorage.removeItem('apresentacao_slide_counter');
                     localStorage.removeItem('apresentacao_imagens');
                     location.reload();
                 }
@@ -989,7 +1241,7 @@
                 const el = document.getElementById(this.slidesIds[index]);
                 if (el) el.classList.add('active');
                 this.slideAtual = index;
-                document.getElementById('numSlide').textContent = index + 1;
+                this.atualizarContadores();
                 if (index === 4 && this.perguntasQuiz.length > 0) this.carregarQuizDemo();
                 if (index === 7) this.carregarRankingFinal();
                 if (index === 6) {
@@ -1151,9 +1403,10 @@
         document.addEventListener('keydown', (e) => {
             if (document.activeElement?.isContentEditable) return;
             if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); App.proximoSlide(); }
-            if (e.key === 'ArrowLeft') { e.preventDefault(); if (App.slideAtual > 0) App.irParaSlide(App.slideAtual - 1); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); App.slideAnterior(); }
             if (e.key === 'f' || e.key === 'F') App.toggleFullscreen();
-            if (e.key === 'Escape') toggleConfig();
+            if (e.key === 'Escape') { if (App.modoApresentacao) App.toggleModo(); else toggleConfig(); }
+            if (e.key === 'p' || e.key === 'P') App.toggleModo();
         });
 
         window.addEventListener('DOMContentLoaded', () => App.init());
